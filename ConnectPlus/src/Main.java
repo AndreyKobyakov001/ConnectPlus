@@ -2,7 +2,8 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private static final String USER_DATA_FILE = "user_data.txt"; // Text file to store usernames and hashed passwords
+    private static final String USER_DATA_FILE = "C:\\Users\\andre\\IdeaProjects\\ConnectPlus\\ConnectPlus\\user_data.txt"; // Text file to store usernames and hashed passwords
+    //this stupidly long mess was necessary
     private static final char PASSWORD_MASK = '*';
 
     public static void main(String[] args) {
@@ -261,15 +262,18 @@ public class Main {
 
                     // Implement your player vs. player game logic here
                     char currentPlayer = 'X';
-
                     while (true) {
                         board.displayBoard();
                         System.out.println("Player " + currentPlayer + ", enter the column to drop your piece:");
                         int column = scanner.nextInt() - 1;
                         scanner.nextLine(); // Consume the newline character
-
+                        if (winChecker.checkWin(currentPlayer)) {
+                            board.displayBoard();
+                            System.out.println("Player " + currentPlayer + " wins!");
+                            break;
+                        }
                         if (board.makeMove(column, currentPlayer)) {
-                            if (winChecker.checkWin(board.findEmptyRow(column), column, currentPlayer)) {
+                            if (winChecker.checkWin(currentPlayer)) {
                                 board.displayBoard();
                                 System.out.println("Player " + currentPlayer + " wins!");
                                 break;
@@ -285,6 +289,9 @@ public class Main {
                             System.out.println("Invalid move. Please try again.");
                         }
                     }
+
+
+
                 } else {
                     System.out.println("The second player does not exist. Please try again.");
                 }

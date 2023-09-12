@@ -35,8 +35,8 @@ public class Board {
     }
 
     public boolean makeMove(int column, char playerSymbol) {
-        if (column < 0 || column >= length || board[0][column] != '?') {
-            return false; // Invalid move
+        if (column < 0 || column >= length) {
+            return false; // Invalid column
         }
 
         int row = findEmptyRow(column);
@@ -55,12 +55,6 @@ public class Board {
             }
         }
         return -1; // Column is full
-    }
-
-    public boolean checkWin(char playerSymbol) {
-        // Implement the win condition checking logic (vertical, horizontal, diagonal)
-        // ...
-        return false; // Placeholder, change this
     }
 
     public boolean isFull() {

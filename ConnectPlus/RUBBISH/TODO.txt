@@ -1,0 +1,27 @@
+1. Fix board overflow error on inserting the last piece, such as the third piece in the first column in a 3x3 grid:
+[X] ? ?
+ X O ?
+ X O ?
+ fails. This is wrong.
+
+2. Fix the horizontal checker:
+? ? ? ? ? ? ?
+O ? ? ? ? ? ?
+O ? ? ? ? ? ?
+O ? ? ? ? ? ?
+O ? ? ? ? ? ?
+X X X X ? ? ?
+Player O wins!
+WRONG for WinPieces = 4.
+
+3. Fix diagonal checkers:
+? ? ? ? ?
+? ? ? ? ?
+? ? X ? ?
+X X O O ?
+X O O X ?
+WRONG for WinPieces = 3.
+
+4. Add fail-safes for wrong characters: don't crash the program, but insist that the player try again.
+
+

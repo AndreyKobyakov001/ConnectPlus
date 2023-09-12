@@ -3,85 +3,96 @@ public class WinChecker {
     private char[][] board;
 
     public WinChecker(int piecesToConnect, char[][] board) {
-        this.piecesToConnect = piecesToConnect;
+        this.piecesToConnect = piecesToConnect - 1;//This might not be a good fix.
         this.board = board;
     }
 
-    public boolean checkWin(int row, int col, char playerSymbol) {
+    public boolean checkWin(char playerSymbol) {
         int length = board[0].length;
         int height = board.length;
 
-        return checkVertical(row, col, playerSymbol, length, height) ||
-                checkHorizontal(row, col, playerSymbol, length, height) ||
-                checkDiagonal(row, col, playerSymbol, length, height);
+        return checkHorizontal(playerSymbol, length, height) ||
+                checkVertical(playerSymbol, length, height) ||
+                checkDiagonal(playerSymbol, length, height);
     }
 
-    private boolean checkVertical(int row, int col, char playerSymbol, int length, int height) {
-        int count = 1;
-
-        // Check upwards
-        for (int i = row - 1; i >= 0 && board[i][col] == playerSymbol; i--) {
-            count++;
+    private boolean checkVertical(char playerSymbol, int length, int height) {
+        for (int col = 0; col < length; col++) {
+            int count = 0;
+            for (int row = 0; row < height; row++) {
+                if (board[row][col] == playerSymbol) {
+                    count++;
+                    if (count == piecesToConnect) {
+                        return true;
+                    }
+                } else {
+                    count = 0;
+                }
+            }
         }
-
-        // Check downwards
-        for (int i = row + 1; i < height && board[i][col] == playerSymbol; i++) {
-            count++;
-        }
-
-        return count >= piecesToConnect;
+        return false;
     }
 
-    private boolean checkHorizontal(int row, int col, char playerSymbol, int length, int height) {
-        int count = 1;
-
-        // Check left
-        for (int i = col - 1; i >= 0 && board[row][i] == playerSymbol; i--) {
-            count++;
+    private boolean checkHorizontal(char playerSymbol, int length, int height) {
+        for (int row = 0; row < height; row++) {
+            int count = 0;
+            for (int col = 0; col < length; col++) {
+                if (board[row][col] == playerSymbol) {
+                    count++;
+                    if (count == piecesToConnect) {
+                        return true;
+                    }
+                } else {
+                    count = 0;
+                }
+            }
         }
-
-        // Check right
-        for (int i = col + 1; i < length && board[row][i] == playerSymbol; i++) {
-            count++;
-        }
-
-        return count >= piecesToConnect;
+        return false;
     }
 
-    private boolean checkDiagonal(int row, int col, char playerSymbol, int length, int height) {
-        return checkDiagonalNWSE(row, col, playerSymbol, length, height) ||
-                checkDiagonalNESW(row, col, playerSymbol, length, height);
+    private boolean checkDiagonal(char playerSymbol, int length, int height) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < length; col++) {
+                if (checkDiagonalNWSE(playerSymbol, row, col, length, height) ||
+                        checkDiagonalNESW(playerSymbol, row, col, length, height)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    private boolean checkDiagonalNWSE(int row, int col, char playerSymbol, int length, int height) {
-        int count = 1;
-
-        // Check northwest
-        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0 && board[i][j] == playerSymbol; i--, j--) {
-            count++;
+    private boolean checkDiagonalNWSE(char playerSymbol, int row, int col, int length, int height) {
+        int count = 0;
+        while (row < height && col < length) {
+            if (board[row][col] == playerSymbol) {
+                count++;
+                if (count == piecesToConnect) {
+                    return true;
+                }
+            } else {
+                count = 0;
+            }
+            row++;
+            col++;
         }
-
-        // Check southeast
-        for (int i = row + 1, j = col + 1; i < height && j < length && board[i][j] == playerSymbol; i++, j++) {
-            count++;
-        }
-
-        return count >= piecesToConnect;
+        return false;
     }
 
-    private boolean checkDiagonalNESW(int row, int col, char playerSymbol, int length, int height) {
-        int count = 1;
-
-        // Check northeast
-        for (int i = row - 1, j = col + 1; i >= 0 && j < length && board[i][j] == playerSymbol; i--, j++) {
-            count++;
+    private boolean checkDiagonalNESW(char playerSymbol, int row, int col, int length, int height) {
+        int count = 0;
+        while (row < height && col >= 0) {
+            if (board[row][col] == playerSymbol) {
+                count++;
+                if (count == piecesToConnect) {
+                    return true;
+                }
+            } else {
+                count = 0;
+            }
+            row++;
+            col--;
         }
-
-        // Check southwest
-        for (int i = row + 1, j = col - 1; i < height && j >= 0 && board[i][j] == playerSymbol; i++, j--) {
-            count++;
-        }
-
-        return count >= piecesToConnect;
+        return false;
     }
 }

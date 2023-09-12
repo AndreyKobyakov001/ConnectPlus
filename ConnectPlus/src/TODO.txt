@@ -1,0 +1,42 @@
+1. Fix board overflow error on inserting the last piece, such as the third piece in the first column in a 3x3 grid: DONE
+[X] ? ?
+ X O ?
+ X O ?
+ fails. This is wrong.
+
+2. Fix the horizontal checker: DONE
+? ? ? ? ? ? ?
+O ? ? ? ? ? ?
+O ? ? ? ? ? ?
+O ? ? ? ? ? ?
+O ? ? ? ? ? ?
+X X X X ? ? ?
+Player O wins!
+WRONG for WinPieces = 4.
+
+3. Fix diagonal checkers:DONE (in theory)
+? ? ? ? ?
+? ? ? ? ?
+? ? X ? ?
+X X O O ?
+X O O X ?
+WRONG for WinPieces = 3.
+
+4. Add fail-safes for wrong characters: don't crash the program, but insist that the player try again.
+
+5. Add settings.txt to save length, width, and win condition
+
+6. Add A player-vs-bot mode, where a player can face off a bot of varying difficulty from 1 to 10,
+where 1 is a completely random move selector and 10 is a minmax algorithm designed to win.
+
+7. Undo button, allowing up to a preselected number of undos per game
+
+8. Better game-saving system
+
+9. Function ELO calculation based on games plays and moves to win, relative to opponent moves. Bots will always add or take
+BOT_DIFFICULTY * PIECESCONNECTED - MOVESTOWIN - UNDOS or something like that. Opponents will follow a similar calculation,
+with ELODIFF * PIECESCONNECTED - MOVESTOWIN - UNDOS or something similar.
+
+10. Make the statistics actually change instead of being the defaults
+
+
