@@ -122,7 +122,7 @@ public class Main {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 String[] userData = line.split("■");
-                if (userData.length == 2 && userData[0].equals(username)) {
+                if (userData[0].equals(username)) {
                     fileScanner.close();
                     return true;
                 }
@@ -167,7 +167,7 @@ public class Main {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 String[] userData = line.split("■");
-                if (userData.length == 2 && userData[0].equals(username) && userData[1].equals(hashPassword(password))) {
+                if (userData[0].equals(username) && userData[1].equals(hashPassword(password))) {
                     return true;
                 }
             }
@@ -183,9 +183,37 @@ public class Main {
         // You can implement the logic to retrieve and display user statistics here.
         // For now, use a placeholder.
         System.out.println("\n" + "*****************************************\n" + "\nStatistics for user: " + username);
-        System.out.println("Games won: 1");
-        System.out.println("Games lost: 0" + "\n" + "\n*****************************************\n");
+        int gamesWon = 0;
+        int gamesLost = 0;
+
+        try {
+            File file = new File(USER_DATA_FILE);
+            Scanner fileScanner = new Scanner(file);
+
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                String[] userData = line.split("■");
+
+                // Check if the current line's username matches the desired username
+                if (userData.length >= 1 && userData[0].equals(username)) {
+                    // Make sure there are enough elements in the array to access games won and lost
+                    if (userData.length >= 4) {
+                        gamesWon = Integer.parseInt(userData[2]);
+                        gamesLost = Integer.parseInt(userData[3]);
+                    }
+                    break; // Exit the loop once we've found the desired username
+                }
+            }
+
+            fileScanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Games Won: " + gamesWon);
+        System.out.println("Games lost: " + gamesLost + "\n" + "\n*****************************************\n");
     }
+
 
     private static void saveUserDataToFile(String username, String password) {
         try {
@@ -193,7 +221,8 @@ public class Main {
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
             // Save username and hashed password in the format: "username■hashed_password"
-            String userData = username + "■" + hashPassword(password);
+            String userData = username + "■" + hashPassword(password) + "■0■0■1000";
+            //default ELO of 1,000
             printWriter.println(userData);
 
             printWriter.close();
@@ -276,8 +305,53 @@ public class Main {
                             if (winChecker.checkWin(currentPlayer)) {
                                 board.displayBoard();
                                 System.out.println("Player " + currentPlayer + " wins!");
+
+                                String winnerName = (currentPlayer == 'X') ? username : secondPlayer;
+                                String loserName = (currentPlayer == 'X') ? secondPlayer : username;
+//                                System.out.println(secondPlayer);
+                                // Open the user data file for reading and writing
+                                File userDataFile = new File(USER_DATA_FILE);
+                                try {
+                                    // Read the existing user data and update it
+                                    List<String> lines = new ArrayList<>();
+                                    Scanner fileScanner = new Scanner(userDataFile);
+                                    while (fileScanner.hasNextLine()) {
+                                        String line = fileScanner.nextLine();
+                                        String[] userData = line.split("■");
+
+                                        if (userData.length >= 1 && userData[0].equals(winnerName)) {
+                                            // Found the winner's data, update games won (3rd element) by 1
+                                            int gamesWon = Integer.parseInt(userData[2]);
+                                            int winnerELO = Integer.parseInt(userData[4]);
+                                            //update ELO score.
+                                            gamesWon++;
+                                            userData[2] = String.valueOf(gamesWon);
+                                        } else if (userData.length >= 1 && userData[0].equals(loserName)) {
+                                            // Found the loser's data, update games lost (4th element) by 1
+                                            int gamesLost = Integer.parseInt(userData[3]);
+                                            int loserELO = Integer.parseInt(userData[4]);
+                                            gamesLost++;
+                                            userData[3] = String.valueOf(gamesLost);
+                                        }
+                                        // Reconstruct the line with updated data
+                                        String updatedLine = String.join("■", userData);
+                                        lines.add(updatedLine);
+                                    }
+                                    fileScanner.close();
+
+                                    // Write the updated data back to the file
+                                    FileWriter fileWriter = new FileWriter(userDataFile);
+                                    PrintWriter printWriter = new PrintWriter(fileWriter);
+                                    for (String updatedLine : lines) {
+                                        printWriter.println(updatedLine);
+                                    }
+                                    printWriter.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
                                 break;
-                            } else if (board.isFull()) {
+                        } else if (board.isFull()) {
                                 board.displayBoard();
                                 System.out.println("It's a tie!");
                                 break;
