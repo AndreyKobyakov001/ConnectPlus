@@ -39,4 +39,6 @@ with ELODIFF * PIECESCONNECTED - MOVESTOWIN - UNDOS or something similar.
 
 10. Make the statistics actually change instead of being the defaults
 
+11. Make user functions screen: an option to reset user statistics, delete accounts, change passwords, and the like.
+Possibly limit the number of resets to 0, to avoid ELO changing?
 
