@@ -80,10 +80,6 @@ with ELODIFF * PIECESCONNECTED - MOVESTOWIN - UNDOS or something similar.
 
 10. Make the statistics actually change instead of being the defaults
 
-<<<<<<< HEAD
-11. Make user functions screen: an option to reset user statistics, delete accounts, change passwords, and the like.
-Possibly limit the number of resets to 0, to avoid ELO changing?
-=======
 11. Game saving mechanic, where each game is saved as an array of numbers indicating which column each player went to.
 For example, in a 3x3 grid, [1,3,2,2,3,1,1] would be
                                                         X ? ?
@@ -94,7 +90,6 @@ and (b) allow for an undo by simply reverting to the previous move's game-record
     Addendum 11.a: it would also be possible to store the game state in a 2-D array, whether the actual board or the
     coordinates of each piece dropped (for the above example, [(1,1), (3,1), (2,1), (2,2), (3,2), (1, 2), (1, 3)] but
     this seems less practical).
->>>>>>> e9382993f696cfc7432fd35714c91a1486e08f41
 
 12. Quitting a game counts as resigning.
 
@@ -107,4 +102,5 @@ the respective columns (that switch to [X] when it is not possible to move there
 14. A super-complication could be permitting more than 2 players, but this seems rather difficult not in implementation,
 but continuation.
 
-15. Add user functionality such as resetting passwords and accounts, as well as a way to delete one's account.
+15. Make user functions screen: an option to reset user statistics, delete accounts, change passwords, and the like.
+ Possibly limit the number of resets to 0, to avoid ELO changing?
