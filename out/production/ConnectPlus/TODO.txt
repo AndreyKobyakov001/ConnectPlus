@@ -34,33 +34,6 @@ typical outwards pattern:
                                     ? ? X X O ? ?
                                     ? ? O X X O ?
 
-1. Fix board overflow error on inserting the last piece, such as the third piece in the first column in a 3x3 grid: DONE
-[X] ? ?
- X O ?
- X O ?
- fails. This is wrong.
-
-2. Fix the horizontal checker: DONE
-? ? ? ? ? ? ?
-O ? ? ? ? ? ?
-O ? ? ? ? ? ?
-O ? ? ? ? ? ?
-O ? ? ? ? ? ?
-X X X X ? ? ?
-Player O wins!
-WRONG for WinPieces = 4.
-
-3. Fix diagonal checkers:DONE (in theory)
-? ? ? ? ?
-? ? ? ? ?
-? ? X ? ?
-X X O O ?
-X O O X ?
-WRONG for WinPieces = 3.
-
-4. Add fail-safes for wrong characters: don't crash the program, but insist that the player try again.
-
-5. Add settings.txt to save length, width, and win condition
 
 6. Add A player-vs-bot mode, where a player can face off a bot of varying difficulty from 1 to 10,
 where 1 is a completely random move selector and 10 is a minmax algorithm designed to win.
@@ -74,11 +47,7 @@ during game setup; 3 by default).
 
 8. Better game-saving system
 
-9. Function ELO calculation based on games plays and moves to win, relative to opponent moves. Bots will always add or take
-BOT_DIFFICULTY * PIECESCONNECTED - MOVESTOWIN - UNDOS or something like that. Opponents will follow a similar calculation,
-with ELODIFF * PIECESCONNECTED - MOVESTOWIN - UNDOS or something similar.
-
-10. Make the statistics actually change instead of being the defaults
+9. Improve ELO calculator
 
 11. Game saving mechanic, where each game is saved as an array of numbers indicating which column each player went to.
 For example, in a 3x3 grid, [1,3,2,2,3,1,1] would be
@@ -91,7 +60,6 @@ and (b) allow for an undo by simply reverting to the previous move's game-record
     coordinates of each piece dropped (for the above example, [(1,1), (3,1), (2,1), (2,2), (3,2), (1, 2), (1, 3)] but
     this seems less practical).
 
-12. Quitting a game counts as resigning.
 
 13. Make the UI prettier on the backend for debugging, and consequently, on the frontend also. Add possibly numbers to
 the respective columns (that switch to [X] when it is not possible to move there any more) or something of the sort.
@@ -102,3 +70,8 @@ the respective columns (that switch to [X] when it is not possible to move there
 14. A super-complication could be permitting more than 2 players, but this seems rather difficult not in implementation,
 but continuation.
 
+15. Make user functions screen: an option to reset user statistics, delete accounts, change passwords, and the like.
+ Possibly limit the number of resets to 0, to avoid ELO changing?
+
+16. IMPORTANT: migrate user stats to a class, that they might be more elegant. A single function to quickly transfer
+all data and then put that in a class identified by username, such as user.gamesWon, would be much more effective.
