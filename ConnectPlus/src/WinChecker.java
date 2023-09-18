@@ -3,7 +3,7 @@ public class WinChecker {
     private char[][] board;
 
     public WinChecker(int piecesToConnect, char[][] board) {
-        this.piecesToConnect = piecesToConnect - 1;//This might not be a good fix.
+        this.piecesToConnect = piecesToConnect;//This might not be a good fix.
         this.board = board;
     }
 
