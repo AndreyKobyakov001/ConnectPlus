@@ -34,30 +34,6 @@ typical outwards pattern:
                                     ? ? X X O ? ?
                                     ? ? O X X O ?
 
-1. Fix board overflow error on inserting the last piece, such as the third piece in the first column in a 3x3 grid: DONE
-[X] ? ?
- X O ?
- X O ?
- fails. This is wrong.
-
-2. Fix the horizontal checker: DONE
-? ? ? ? ? ? ?
-O ? ? ? ? ? ?
-O ? ? ? ? ? ?
-O ? ? ? ? ? ?
-O ? ? ? ? ? ?
-X X X X ? ? ?
-Player O wins!
-WRONG for WinPieces = 4.
-
-3. Fix diagonal checkers:DONE (in theory)
-? ? ? ? ?
-? ? ? ? ?
-? ? X ? ?
-X X O O ?
-X O O X ?
-WRONG for WinPieces = 3.
-
 4. Add fail-safes for wrong characters: don't crash the program, but insist that the player try again.
 
 5. Add settings.txt to save length, width, and win condition
@@ -103,3 +79,5 @@ the respective columns (that switch to [X] when it is not possible to move there
 but continuation.
 
 15. Add user functionality such as resetting passwords and accounts, as well as a way to delete one's account.
+
+16. Update User class to

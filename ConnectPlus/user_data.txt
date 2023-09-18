@@ -1,4 +1,4 @@
-Hello■1234Hello
-Hell■1234Hell
-a■a
-b■b
+Hello■1234Hello■0■0■1000
+Hell■1234Hell■0■0■1000
+a■a■4■1■1000
+b■b■0■1■1000
