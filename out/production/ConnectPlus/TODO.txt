@@ -34,10 +34,6 @@ typical outwards pattern:
                                     ? ? X X O ? ?
                                     ? ? O X X O ?
 
-4. Add fail-safes for wrong characters: don't crash the program, but insist that the player try again.
-
-5. Add settings.txt to save length, width, and win condition
-
 6. Add A player-vs-bot mode, where a player can face off a bot of varying difficulty from 1 to 10,
 where 1 is a completely random move selector and 10 is a minmax algorithm designed to win.
 
@@ -47,8 +43,6 @@ during game setup; 3 by default).
     instead of the players. This could also be capped at 3 - like the regular undo button, it would revert the game to
     the player's previous game state. If there  is only one player, it deletes both the bot and player move - it is more
     of a super undo button, really.
-
-8. Better game-saving system
 
 9. Improve ELO calculator
 
@@ -78,3 +72,5 @@ but continuation.
 
 16. IMPORTANT: migrate user stats to a class, that they might be more elegant. A single function to quickly transfer
 all data and then put that in a class identified by username, such as user.gamesWon, would be much more effective.
+
+17. Check to not allow player to play against himself.

@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 
 public class Main {
-    private static final String USER_DATA_FILE = "C:\\Users\\Andrey Kobyakov\\IdeaProjects\\ConnectPlus\\ConnectPlus\\user_data.txt"; // Text file to store usernames and hashed passwords
-    private static final String SETTINGS_FILE = "C:\\Users\\Andrey Kobyakov\\IdeaProjects\\ConnectPlus\\ConnectPlus\\settings.txt"; // Text file to store usernames and hashed passwords
+    private static final String USER_DATA_FILE = "ConnectPlus\\user_data.txt"; // Text file to store usernames and hashed passwords
+    private static final String SETTINGS_FILE = "ConnectPlus\\settings.txt"; // Text file to store usernames and hashed passwords
     //this stupidly long mess was necessary
 
 
