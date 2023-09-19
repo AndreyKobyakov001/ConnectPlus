@@ -45,8 +45,6 @@ during game setup; 3 by default).
     the player's previous game state. If there  is only one player, it deletes both the bot and player move - it is more
     of a super undo button, really.
 
-8. Better game-saving system
-
 9. Improve ELO calculator
 
 11. Game saving mechanic, where each game is saved as an array of numbers indicating which column each player went to.
@@ -75,3 +73,4 @@ but continuation.
 
 16. IMPORTANT: migrate user stats to a class, that they might be more elegant. A single function to quickly transfer
 all data and then put that in a class identified by username, such as user.gamesWon, would be much more effective.
+

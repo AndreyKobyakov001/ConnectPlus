@@ -290,16 +290,22 @@ public class Main {
         System.out.println("Select a game mode:");
         System.out.println("1. Player vs. Player");
         System.out.println("2. Player vs. Bot");
-        int gameModeChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
-
-
+        String gameModeChoice = scanner.nextLine();
         switch (gameModeChoice) {
-//
-            case 1:
+            case "1":
                 // Player vs. Player
-                System.out.println("Enter the username of the second player:");
-                String secondPlayer = scanner.nextLine();
+                boolean logged = false;
+                String secondPlayer = null;
+                while (!logged) {
+                    System.out.println("Enter the username of the second player:");
+                    secondPlayer = scanner.nextLine();
+                    if (Objects.equals(secondPlayer, username)) {
+                        System.out.println("You can't play a game against yourself!");
+                    } else {
+                        // Set logged to true to exit the loop when a different username is provided.
+                        logged = true;
+                    }
+                }
 
 
                 // Check if the second player exists and is not the same as the current
@@ -311,7 +317,6 @@ public class Main {
                     System.out.println("2. Use Last Game's Settings");
                     System.out.println("Continue: Use Default Settings");
                     String choice = scanner.nextLine();
-//                    scanner.nextLine(); // Consume the newline character
                     int length = 0;
                     int height = 0;
                     int piecesToConnect = 0;
@@ -340,7 +345,7 @@ public class Main {
                                 e.printStackTrace();
                             }
                             break;
-                        case "t":
+                        case "t"://for testing purposes only; delete for submission
                             length = 4;
                             height = 4;
                             piecesToConnect = 3;
@@ -372,8 +377,11 @@ public class Main {
                     while (true) {
 //                        prev = board;
                         board.displayBoard();
-                        System.out.println("Player " + currentPlayer + ", enter the column to drop your piece:");
-
+                        if (currentPlayer == 'X') {
+                            System.out.println(username + ", enter the column to drop your piece:");
+                        } else {
+                            System.out.println(secondPlayer + ", enter the column to drop your piece:");
+                        }
                         // Use a try-catch block to handle non-integer input
                         int column = -1; // Initialize to an invalid value
                         boolean validInput = false;
@@ -382,9 +390,9 @@ public class Main {
                             String input = scanner.nextLine();
                             if (input.equalsIgnoreCase("r")) {
                                 char otherPlayer = (currentPlayer == 'X') ? 'O' : 'X';
-                                System.out.println("Player " + otherPlayer + " wins! (Player " + currentPlayer + " quit)");
                                 String winnerName = (otherPlayer == 'X') ? username : secondPlayer;
                                 String loserName = (otherPlayer == 'X') ? secondPlayer : username;
+                                System.out.println("Player " + winnerName + " wins! (Player " + loserName + " quit)");
                                 winner(winnerName, loserName);
                                 return; // Exit the game
                             }
@@ -409,14 +417,10 @@ public class Main {
                         if (board.makeMove(column, currentPlayer)) {
                             if (winChecker.checkWin(currentPlayer)) {
                                 board.displayBoard();
-                                System.out.println("Player " + currentPlayer + " wins!");
-
-
                                 String winnerName = (currentPlayer == 'X') ? username : secondPlayer;
                                 String loserName = (currentPlayer == 'X') ? secondPlayer : username;
+                                System.out.println("Player " + winnerName + " wins!");
                                 winner(winnerName, loserName);
-
-
                                 break;
                             } else if (board.isFull()) {
                                 board.displayBoard();
@@ -436,11 +440,13 @@ public class Main {
                 break;
 
 
-            case 2:
+            case "2":
                 // Player vs. Bot
                 System.out.println("Select bot difficulty (1-10):");
                 int botDifficulty = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
+
+
+//                scanner.nextLine(); // Consume the newline character
 
 
                 if (botDifficulty >= 1 && botDifficulty <= 10) {
@@ -509,7 +515,7 @@ public class Main {
     private static int getBoardLength(Scanner scanner) {
         System.out.println("Enter the board length (2-10):");
         int length = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+//        scanner.nextLine(); // Consume the newline character
         return length;
     }
 
@@ -525,7 +531,7 @@ public class Main {
     private static int getRequiredPieces(Scanner scanner) {
         System.out.println("Enter the number of pieces needed to connect (2-9):");
         int pieces = scanner.nextInt() + 1; //this is a temporary fix ONLY! - make it work later.
-        scanner.nextLine(); // Consume the newline character
+//        scanner.nextLine(); // Consume the newline character
         return pieces;
     }
 }

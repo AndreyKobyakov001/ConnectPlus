@@ -64,9 +64,6 @@ public class User {
         this.eloRating = eloRating;
     }
 
-    // Additional methods for user management, such as authentication, can be added here
-
-    // Method to validate a username's uniqueness
     private boolean isValidUsername(String username) {
         // Implement logic to check if the username is unique (e.g., check against a database)
         // Return true if unique, false otherwise.
