@@ -34,7 +34,6 @@ typical outwards pattern:
                                     ? ? X X O ? ?
                                     ? ? O X X O ?
 
-
 6. Add A player-vs-bot mode, where a player can face off a bot of varying difficulty from 1 to 10,
 where 1 is a completely random move selector and 10 is a minmax algorithm designed to win.
 
