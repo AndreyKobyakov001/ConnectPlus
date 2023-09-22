@@ -96,7 +96,8 @@ public class Main {
                 createAccount(scanner);
             }
         } else {
-            System.out.println("Enter a password:");
+            System.out.println("Enter a password (password must contain a lower-case letter, an upper-case letter, " +
+                    "and a number. Passwords must be at least 8 characters long):");
             String password = enterPasswordMasked(scanner);
 
 

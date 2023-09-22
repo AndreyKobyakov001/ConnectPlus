@@ -73,3 +73,4 @@ but continuation.
 16. IMPORTANT: migrate user stats to a class, that they might be more elegant. A single function to quickly transfer
 all data and then put that in a class identified by username, such as user.gamesWon, would be much more effective.
 
+17. Add instaceof VARIABLETYPE checks throughout, to prevent illegal options or consequences for the same.
