@@ -286,7 +286,6 @@ public class Main {
         }
     }
 
-
     private static void playGame(String username, Scanner scanner) {
         System.out.println("Select a game mode:");
         System.out.println("1. Player vs. Player");
@@ -324,9 +323,15 @@ public class Main {
 
                     switch (choice) {
                         case "1":
-                             length = getBoardLength(scanner);
-                             height = getBoardHeight(scanner);
-                             piecesToConnect = getRequiredPieces(scanner);
+                            length = getBoardLength(scanner);
+                            height = getBoardHeight(scanner);
+                            boolean valid = false;
+                            while (!valid) {
+                                piecesToConnect = getRequiredPieces(scanner);
+                                if (piecesToConnect <= length && piecesToConnect <= height) {
+                                    valid = true;
+                                }
+                            }
                             break;
                         case "2":
                             try {
@@ -372,7 +377,8 @@ public class Main {
 
                     Board board = new Board(length, height, piecesToConnect);
                     WinChecker winChecker = new WinChecker(piecesToConnect, board.getBoard());
-                    Board prev = new Board(length, height, piecesToConnect);;
+                    Board prev = new Board(length, height, piecesToConnect);
+                    ;
                     // Implement your player vs. player game logic here
                     char currentPlayer = 'X';
                     while (true) {
@@ -446,22 +452,145 @@ public class Main {
                 System.out.println("Select bot difficulty (1-10):");
                 int botDifficulty = scanner.nextInt();
 
-
-//                scanner.nextLine(); // Consume the newline character
-
-
                 if (botDifficulty >= 1 && botDifficulty <= 10) {
                     System.out.println("Game started: " + username + " vs. Bot (Difficulty: " + botDifficulty + ")");
-                    // Implement your player vs. bot game logic here
                 } else {
                     System.out.println("Invalid bot difficulty. Please select a number between 1 and 10.");
                 }
-                break;
-            default:
-                System.out.println("Invalid choice. Please enter 1 or 2.");
-                break;
+                String[] difficulty = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+                String machine = "Machine " + difficulty[botDifficulty-1];
+                System.out.println("Game started: " + username + " vs." + machine);
+
+                System.out.println("Select an option:");
+                System.out.println("1. Set Board Dimensions");
+                System.out.println("2. Use Last Game's Settings");
+                System.out.println("Continue: Use Default Settings");
+                String choice = scanner.nextLine();
+                int length = 0;
+                int height = 0;
+                int piecesToConnect = 0;
+                switch (choice) {
+                    case "1":
+                        length = getBoardLength(scanner);
+                        height = getBoardHeight(scanner);
+                        boolean valid = false;
+                        while (!valid) {
+                            piecesToConnect = getRequiredPieces(scanner);
+                            if (piecesToConnect <= length && piecesToConnect <= height) {
+                                valid = true;
+                            }
+                        }
+                        break;
+                    case "2":
+                        try {
+                            File file = new File(SETTINGS_FILE);
+                            Scanner fileScanner = new Scanner(file);
+
+
+                            while (fileScanner.hasNextLine()) {
+                                String line = fileScanner.nextLine();
+                                String[] settings = line.split("■");
+                                length = Integer.parseInt(settings[0]);
+                                height = Integer.parseInt(settings[1]);
+                                piecesToConnect = Integer.parseInt(settings[2]);
+                            }
+                            fileScanner.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "t"://for testing purposes only; delete for submission
+                        length = 4;
+                        height = 4;
+                        piecesToConnect = 3;
+                        break;
+                    default:
+                        length = 7;
+                        height = 6;
+                        piecesToConnect = 4;
+                        break;
+                }
+
+                try {
+                    FileWriter fileWriter = new FileWriter(SETTINGS_FILE, false); // Open the file in overwrite mode
+                    PrintWriter printWriter = new PrintWriter(fileWriter);
+
+                    String userData = length + "■" + height + "■" + piecesToConnect;
+                    printWriter.println(userData);
+
+                    printWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Board board = new Board(length, height, piecesToConnect);
+                WinChecker winChecker = new WinChecker(piecesToConnect, board.getBoard());
+                Board prev = new Board(length, height, piecesToConnect);
+                ;
+                char currentPlayer = 'X';
+                while (true) {
+//                        prev = board;
+                    board.displayBoard();
+                    if (currentPlayer == 'X') {
+                        System.out.println(username + ", enter the column to drop your piece:");
+                    } else {
+                        System.out.println("Bot chooses column " + 1);
+                    }
+                    int column = -1; // Initialize to an invalid value
+                    boolean validInput = false;
+
+                    while (!validInput) {
+                        String input = scanner.nextLine();
+                        if (input.equalsIgnoreCase("r")) {
+                            char otherPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                            String winnerName = (otherPlayer == 'X') ? username : machine;
+                            String loserName = (otherPlayer == 'X') ? machine : username;
+                            System.out.println("Player " + winnerName + " wins! (Player " + loserName + " quit)");
+                            winner(winnerName, loserName);
+                            return; // Exit the game
+                        }
+                        if (input.equalsIgnoreCase("q")) {
+                            board = prev;
+                            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                        }
+                        try {
+                            column = Integer.parseInt(input) - 1;
+                            validInput = true; // Input is valid; exit the loop
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a valid integer for the column.");
+                        }
+                    }
+
+                    if (winChecker.checkWin(currentPlayer)) {
+                        board.displayBoard();
+                        System.out.println("Player " + currentPlayer + " wins!");
+                        break;
+                    }
+
+                    if (board.makeMove(column, currentPlayer)) {
+                        if (winChecker.checkWin(currentPlayer)) {
+                            board.displayBoard();
+                            String winnerName = (currentPlayer == 'X') ? username : machine;
+                            String loserName = (currentPlayer == 'X') ? machine : username;
+                            System.out.println("Player " + winnerName + " wins!");
+                            winner(winnerName, loserName);
+                            break;
+                        } else if (board.isFull()) {
+                            board.displayBoard();
+                            System.out.println("It's a tie!");
+                            break;
+                        }
+                        prev = board;
+                        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                    } else {
+                        System.out.println("Invalid move. Please try again.");
+                    }
+                }
+
         }
     }
+
+
 
     public static void winner(String winnerName, String loserName) {
 // Open the user data file for reading and writing
