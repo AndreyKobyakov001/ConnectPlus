@@ -1,3 +1,5 @@
+import Entities.User;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +116,7 @@ public class Main {
                     saveUserDataToFile(newUser.getUsername(), newUser.getPassword());
 
 
-                    System.out.println("User account created successfully.");
+                    System.out.println("Entities.User account created successfully.");
 //                    System.out.println(newUser);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Error: " + e.getMessage());
