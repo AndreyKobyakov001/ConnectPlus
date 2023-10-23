@@ -1,3 +1,7 @@
+package Entities;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.*;
 
 public class User {
@@ -6,6 +10,8 @@ public class User {
     private int wins;
     private int losses;
     private int eloRating;
+
+    public List<List<Integer>> games;
 
     public User(String username, String password, String confirmPassword) throws IllegalArgumentException {
         if (!isValidUsername(username)) {
@@ -16,6 +22,7 @@ public class User {
             throw new IllegalArgumentException("Password requirements not met.");
         }
 
+        this.games = new ArrayList<>();
         this.username = username;
         this.password = password;
         this.wins = 0;
@@ -87,11 +94,24 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Entities.User{" +
                 "username='" + username + '\'' +
                 ", wins=" + wins +
                 ", losses=" + losses +
                 ", eloRating=" + eloRating +
                 '}';
+    }
+
+    public void setgames(String games) {
+        // need to create this method in order to set the games the user allready has according to the
+        // database which gives a string of a list of a list of games
+    }
+
+    public void addgame(){
+        // need to create this method to add a game after it has ended to the users playing
+    }
+
+    public List<List<Integer>> getgames(){
+        return this.games;
     }
 }
