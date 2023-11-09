@@ -8,12 +8,13 @@ import java.util.Scanner;
 
 
 public class Main {
-    private static final String USER_DATA_FILE = "ConnectPlus\\user_data.txt"; // Text file to store usernames and hashed passwords
-    private static final String SETTINGS_FILE = "ConnectPlus\\settings.txt"; // Text file to store usernames and hashed passwords
+    private static final String USER_DATA_FILE = "./user_data.txt"; // Text file to store usernames and hashed passwords
+    private static final String SETTINGS_FILE = "./settings.txt"; // Text file to store usernames and hashed passwords
     //this stupidly long mess was necessary
 
 
     public static void main(String[] args) {
+        System.out.println(System.getProperty("user.dir"));
         Scanner scanner = new Scanner(System.in);
         boolean signedIn = false;
         String currentUser = "";
