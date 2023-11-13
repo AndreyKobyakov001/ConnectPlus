@@ -221,24 +221,24 @@ public class Main {
 
     private static void playGame(String username, Scanner scanner) {
         System.out.println("Select a game mode:");
-        System.out.println("1. Player vs. Player");
-        System.out.println("2. Player vs. Bot");
+        System.out.println("1. Entities.Player vs. Entities.Player");
+        System.out.println("2. Entities.Player vs. Entities.Bot");
         int gameModeChoice = scanner.nextInt();
         scanner.nextLine(); // Consume the newline character
 
         switch (gameModeChoice) {
 //            case 1:
-//                // Player vs. Player
+//                // Entities.Player vs. Entities.Player
 //                System.out.println("Enter the username of the second player:");
 //                String secondPlayer = scanner.nextLine();
 //
 //                // Check if the second player exists
 //                if (isUsernameExists(secondPlayer)) {
-//                    System.out.println("Game started: " + username + " vs. " + secondPlayer);
+//                    System.out.println("Entities.Game started: " + username + " vs. " + secondPlayer);
 //                    int length = getBoardLength(scanner);
 //                    int height = getBoardHeight(scanner);
 //                    int piecesToConnect = getRequiredPieces(scanner);
-//                    Board board = new Board(length, height, piecesToConnect);
+//                    Entities.Board board = new Entities.Board(length, height, piecesToConnect);
 //
 //                    // Implement your player vs. player game logic here
 //                    // You can use 'board' for the game state
@@ -247,13 +247,13 @@ public class Main {
 //                }
 //                break;
             case 1:
-                // Player vs. Player
+                // Entities.Player vs. Entities.Player
                 System.out.println("Enter the username of the second player:");
                 String secondPlayer = scanner.nextLine();
 
                 // Check if the second player exists
                 if (isUsernameExists(secondPlayer)) {
-                    System.out.println("Game started: " + username + " vs. " + secondPlayer);
+                    System.out.println("Entities.Game started: " + username + " vs. " + secondPlayer);
                     int length = getBoardLength(scanner);
                     int height = getBoardHeight(scanner);
                     int piecesToConnect = getRequiredPieces(scanner);
@@ -264,18 +264,18 @@ public class Main {
                     char currentPlayer = 'X';
                     while (true) {
                         board.displayBoard();
-                        System.out.println("Player " + currentPlayer + ", enter the column to drop your piece:");
+                        System.out.println("Entities.Player " + currentPlayer + ", enter the column to drop your piece:");
                         int column = scanner.nextInt() - 1;
                         scanner.nextLine(); // Consume the newline character
                         if (winChecker.checkWin(board.findEmptyRow(column), column, currentPlayer)) {
                             board.displayBoard();
-                            System.out.println("Player " + currentPlayer + " wins!");
+                            System.out.println("Entities.Player " + currentPlayer + " wins!");
                             break;
                         }
                         if (board.makeMove(column, currentPlayer)) {
                             if (winChecker.checkWin(board.findEmptyRow(column), column, currentPlayer)) {
                                 board.displayBoard();
-                                System.out.println("Player " + currentPlayer + " wins!");
+                                System.out.println("Entities.Player " + currentPlayer + " wins!");
                                 break;
                             } else if (board.isFull()) {
                                 board.displayBoard();
@@ -298,13 +298,13 @@ public class Main {
                 break;
 
             case 2:
-                // Player vs. Bot
+                // Entities.Player vs. Entities.Bot
                 System.out.println("Select bot difficulty (1-10):");
                 int botDifficulty = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
 
                 if (botDifficulty >= 1 && botDifficulty <= 10) {
-                    System.out.println("Game started: " + username + " vs. Bot (Difficulty: " + botDifficulty + ")");
+                    System.out.println("Entities.Game started: " + username + " vs. Entities.Bot (Difficulty: " + botDifficulty + ")");
                     // Implement your player vs. bot game logic here
                 } else {
                     System.out.println("Invalid bot difficulty. Please select a number between 1 and 10.");
