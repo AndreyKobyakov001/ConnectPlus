@@ -7,12 +7,17 @@ import java.util.regex.*;
 public class User {
     private String username;
     private String password;
+    private String email;
     private int wins;
     private int losses;
     private int eloRating;
 
     public List<List<Integer>> games;
 
+
+    public User(String username) {
+        this.username = username;
+    }
     public User(String username, String password, String confirmPassword) throws IllegalArgumentException {
         if (!isValidUsername(username)) {
             throw new IllegalArgumentException("Username is invalid or already exists.");
@@ -71,6 +76,7 @@ public class User {
         this.eloRating = eloRating;
     }
 
+
     private boolean isValidUsername(String username) {
         // Implement logic to check if the username is unique (e.g., check against a database)
         // Return true if unique, false otherwise.
@@ -113,5 +119,12 @@ public class User {
 
     public List<List<Integer>> getgames(){
         return this.games;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
+    public String getemail(){
+        return this.email;
     }
 }
