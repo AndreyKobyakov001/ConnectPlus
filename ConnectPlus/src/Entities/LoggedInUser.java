@@ -1,16 +1,15 @@
 package Entities;
 
+import javax.annotation.Nullable;
+
 public class LoggedInUser {
     private static User loggedInUser;
 
     private LoggedInUser() {
     }
 
-    public static User getLoggedInUser() {
-        if (loggedInUser == null) {
-            throw new IllegalStateException("No user is logged in.");
-        }
-        return loggedInUser;
+    public static Nullable getLoggedInUser() {
+        return (Nullable) loggedInUser;
     }
 
     public static void logIn(User user) {
