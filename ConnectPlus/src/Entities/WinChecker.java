@@ -1,3 +1,5 @@
+package Entities;
+
 public class WinChecker {
     private int piecesToConnect;
     private char[][] board;

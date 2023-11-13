@@ -1,3 +1,5 @@
+package Entities;
+
 import Entities.User;
 
 import java.io.*;
@@ -290,12 +292,12 @@ public class Main {
 
     private static void playGame(String username, Scanner scanner) {
         System.out.println("Select a game mode:");
-        System.out.println("1. Player vs. Player");
-        System.out.println("2. Player vs. Bot");
+        System.out.println("1. Entities.Player vs. Entities.Player");
+        System.out.println("2. Entities.Player vs. Entities.Bot");
         String gameModeChoice = scanner.nextLine();
         switch (gameModeChoice) {
             case "1":
-                // Player vs. Player
+                // Entities.Player vs. Entities.Player
                 boolean logged = false;
                 String secondPlayer = null;
                 while (!logged) {
@@ -312,11 +314,11 @@ public class Main {
 
                 // Check if the second player exists and is not the same as the current
                 if (isUsernameExists(secondPlayer) && !Objects.equals(secondPlayer, username)) {
-                    System.out.println("Game started: " + username + " vs. " + secondPlayer);
+                    System.out.println("Entities.Game started: " + username + " vs. " + secondPlayer);
 
                     System.out.println("Select an option:");
-                    System.out.println("1. Set Board Dimensions");
-                    System.out.println("2. Use Last Game's Settings");
+                    System.out.println("1. Set Entities.Board Dimensions");
+                    System.out.println("2. Use Last Entities.Game's Settings");
                     System.out.println("Continue: Use Default Settings");
                     String choice = scanner.nextLine();
                     int length = 0;
@@ -401,7 +403,7 @@ public class Main {
                                 char otherPlayer = (currentPlayer == 'X') ? 'O' : 'X';
                                 String winnerName = (otherPlayer == 'X') ? username : secondPlayer;
                                 String loserName = (otherPlayer == 'X') ? secondPlayer : username;
-                                System.out.println("Player " + winnerName + " wins! (Player " + loserName + " quit)");
+                                System.out.println("Entities.Player " + winnerName + " wins! (Entities.Player " + loserName + " quit)");
                                 winner(winnerName, loserName);
                                 return; // Exit the game
                             }
@@ -419,7 +421,7 @@ public class Main {
 
                         if (winChecker.checkWin(currentPlayer)) {
                             board.displayBoard();
-                            System.out.println("Player " + currentPlayer + " wins!");
+                            System.out.println("Entities.Player " + currentPlayer + " wins!");
                             break;
                         }
 
@@ -428,7 +430,7 @@ public class Main {
                                 board.displayBoard();
                                 String winnerName = (currentPlayer == 'X') ? username : secondPlayer;
                                 String loserName = (currentPlayer == 'X') ? secondPlayer : username;
-                                System.out.println("Player " + winnerName + " wins!");
+                                System.out.println("Entities.Player " + winnerName + " wins!");
                                 winner(winnerName, loserName);
                                 break;
                             } else if (board.isFull()) {
@@ -450,22 +452,22 @@ public class Main {
 
 
             case "2":
-                // Player vs. Bot
+                // Entities.Player vs. Entities.Bot
                 System.out.println("Select bot difficulty (1-10):");
                 int botDifficulty = scanner.nextInt();
 
                 if (botDifficulty >= 1 && botDifficulty <= 10) {
-                    System.out.println("Game started: " + username + " vs. Bot (Difficulty: " + botDifficulty + ")");
+                    System.out.println("Entities.Game started: " + username + " vs. Entities.Bot (Difficulty: " + botDifficulty + ")");
                 } else {
                     System.out.println("Invalid bot difficulty. Please select a number between 1 and 10.");
                 }
                 String[] difficulty = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
                 String machine = "Machine " + difficulty[botDifficulty-1];
-                System.out.println("Game started: " + username + " vs." + machine);
+                System.out.println("Entities.Game started: " + username + " vs." + machine);
 
                 System.out.println("Select an option:");
-                System.out.println("1. Set Board Dimensions");
-                System.out.println("2. Use Last Game's Settings");
+                System.out.println("1. Set Entities.Board Dimensions");
+                System.out.println("2. Use Last Entities.Game's Settings");
                 System.out.println("Continue: Use Default Settings");
                 String choice = scanner.nextLine();
                 int length = 0;
@@ -536,7 +538,7 @@ public class Main {
                     if (currentPlayer == 'X') {
                         System.out.println(username + ", enter the column to drop your piece:");
                     } else {
-                        System.out.println("Bot chooses column " + 1);
+                        System.out.println("Entities.Bot chooses column " + 1);
                     }
                     int column = -1; // Initialize to an invalid value
                     boolean validInput = false;
@@ -547,7 +549,7 @@ public class Main {
                             char otherPlayer = (currentPlayer == 'X') ? 'O' : 'X';
                             String winnerName = (otherPlayer == 'X') ? username : machine;
                             String loserName = (otherPlayer == 'X') ? machine : username;
-                            System.out.println("Player " + winnerName + " wins! (Player " + loserName + " quit)");
+                            System.out.println("Entities.Player " + winnerName + " wins! (Entities.Player " + loserName + " quit)");
                             winner(winnerName, loserName);
                             return; // Exit the game
                         }
@@ -565,7 +567,7 @@ public class Main {
 
                     if (winChecker.checkWin(currentPlayer)) {
                         board.displayBoard();
-                        System.out.println("Player " + currentPlayer + " wins!");
+                        System.out.println("Entities.Player " + currentPlayer + " wins!");
                         break;
                     }
 
@@ -574,7 +576,7 @@ public class Main {
                             board.displayBoard();
                             String winnerName = (currentPlayer == 'X') ? username : machine;
                             String loserName = (currentPlayer == 'X') ? machine : username;
-                            System.out.println("Player " + winnerName + " wins!");
+                            System.out.println("Entities.Player " + winnerName + " wins!");
                             winner(winnerName, loserName);
                             break;
                         } else if (board.isFull()) {

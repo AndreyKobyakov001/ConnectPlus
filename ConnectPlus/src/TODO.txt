@@ -28,7 +28,7 @@ during game setup; 3 by default).
 
 9. Improve ELO calculator
 
-11. Game saving mechanic, where each game is saved as an array of numbers indicating which column each player went to.
+11. Entities.Game saving mechanic, where each game is saved as an array of numbers indicating which column each player went to.
 For example, in a 3x3 grid, [1,3,2,2,3,1,1] would be
                                                         X ? ?
                                                         O O X
