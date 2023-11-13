@@ -18,7 +18,7 @@ public class Beforeyoustartview extends JPanel implements ActionListener, Proper
 
         private JLabel Beforeyoustart = new JLabel("Before you start");
 
-        private JLabel gamesetting= new JLabel("Game setting");
+        private JLabel gamesetting= new JLabel("Entities.Game setting");
 
         private JLabel mode = new JLabel("MODE");
 
