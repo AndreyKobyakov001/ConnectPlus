@@ -10,6 +10,14 @@ public class Board {
 
 //BOT - UNDER CONSTRUCTION
 
+    public int getLength() {
+        return length;
+    }
+    public int getHeight() {
+        return height;
+    }public int getPieces() {
+        return piecesToConnect;
+    }
 
 
     public int evaluate() {

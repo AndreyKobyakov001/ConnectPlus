@@ -36,13 +36,13 @@ DO NOT DELETE THIS.
         }
     }
 
-public class Board {
+public class Entities.Board {
     private char[][] board;
     private int length;
     private int height;
     private int piecesToConnect;
 
-    public Board(int length, int height, int piecesToConnect) {
+    public Entities.Board(int length, int height, int piecesToConnect) {
         if (length < 2 || length > 10 || height < 2 || height > 10 || piecesToConnect < 2 || piecesToConnect > 9) {
             throw new IllegalArgumentException("Invalid board dimensions or pieces to connect.");
         }
