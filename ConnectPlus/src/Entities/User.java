@@ -1,7 +1,10 @@
 package Entities;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.*;
 
 public class User {
@@ -74,7 +77,7 @@ public class User {
     private boolean isValidUsername(String username) {
         // Implement logic to check if the username is unique (e.g., check against a database)
         // Return true if unique, false otherwise.
-        return true; // Placeholder, you need to implement this logic.
+        return true; // Placeholder; implement this logic.
     }
 
     // Method to validate password requirements
@@ -113,5 +116,51 @@ public class User {
 
     public List<List<Integer>> getgames(){
         return this.games;
+    }
+
+//    VERY NAIVE IMPLEMENTATION - update to data base when implemented
+    private static final String USER_DATA_FILE = "ConnectPlus\\user_data.txt"; // Text file to store usernames and hashed passwords
+    private static final String SETTINGS_FILE = "ConnectPlus\\settings.txt"; // Text file to store usernames and hashed passwords
+    static void displayUserStatistics(String username) {
+        // You can implement the logic to retrieve and display user statistics here.
+        // For now, use a placeholder.
+        System.out.println("\n" + "*****************************************\n" + "\nStatistics for user: " + username);
+        int gamesWon = 0;
+        int gamesLost = 0;
+        int elo = 1000;
+
+        try {
+            File file = new File(USER_DATA_FILE);
+            Scanner fileScanner = new Scanner(file);
+
+
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                String[] userData = line.split("■");
+
+
+                // Check if the current line's username matches the desired username
+                if (userData.length >= 1 && userData[0].equals(username)) {
+                    // Make sure there are enough elements in the array to access games won and lost
+                    if (userData.length >= 4) {
+                        //FIX THIS LATER
+                        gamesWon = Integer.parseInt(userData[2]);
+                        gamesLost = Integer.parseInt(userData[3]);
+                        elo = Integer.parseInt(userData[4]);
+                    }
+                    break; // Exit the loop once we've found the desired username
+                }
+            }
+
+
+            fileScanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("Games Won: " + gamesWon);
+        System.out.println("Games lost: " + gamesLost + "\nELO RATING: " +
+                elo + "\n*****************************************\n");
     }
 }

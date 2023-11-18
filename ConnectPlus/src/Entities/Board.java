@@ -10,6 +10,14 @@ public class Board {
 
 //BOT - UNDER CONSTRUCTION
 
+    public int getLength() {
+        return length;
+    }
+    public int getHeight() {
+        return height;
+    }public int getPieces() {
+        return piecesToConnect;
+    }
 
 
     public int evaluate() {
@@ -77,7 +85,7 @@ public class Board {
         return score;
     }
 
-    private List<Integer> generateLegalMoves() {
+    List<Integer> generateLegalMoves() {
         List<Integer> legalMoves = new ArrayList<>();
 
         for (int column = 0; column < length; column++) {
