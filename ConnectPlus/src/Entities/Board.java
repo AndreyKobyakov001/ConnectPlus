@@ -85,7 +85,7 @@ public class Board {
         return score;
     }
 
-    private List<Integer> generateLegalMoves() {
+    List<Integer> generateLegalMoves() {
         List<Integer> legalMoves = new ArrayList<>();
 
         for (int column = 0; column < length; column++) {

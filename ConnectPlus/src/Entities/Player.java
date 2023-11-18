@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -39,7 +40,13 @@ public class Player {
     }
 
     public static void boardSetup(String username, String secondPlayer) {
-        if (isUsernameExists(secondPlayer) && !Objects.equals(secondPlayer, username)) {
+        String regex = "Machine\\s[VIX]{1,2}";
+        boolean bot = false;
+        if (isUsernameExists(secondPlayer) && !Objects.equals(secondPlayer, username) || secondPlayer.matches("Machine\\s[A-Za-z]{1,2}")) {
+            if (secondPlayer.matches("Machine\\s[A-Za-z]{1,2}")) {
+                System.out.println("You playing a bot, fool!");
+                bot = true;
+            }
             System.out.println("Entities.Game started: " + username + " vs. " + secondPlayer);
 
             System.out.println("Select an option:");
@@ -106,7 +113,19 @@ public class Player {
             Board prev = new Board(length, height, piecesToConnect);
 
             char currentPlayer = 'X';
-            Game.playGame(board, username, secondPlayer, currentPlayer, winChecker);
+            if(!bot) {
+                Game.playGame(board, username, secondPlayer, currentPlayer, winChecker);
+            }
+            if(bot) {
+                System.out.println("Bot Game!");
+                //#TODO: fix this janky mess.
+                List<String> difficulty = List.of(new String[]{"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"});
+                int d = difficulty.indexOf(secondPlayer.split(" ")[1]) + 1;
+                Bot.playGame(board, username, secondPlayer, currentPlayer, winChecker, d);
+            }
+            else {
+                System.out.println("How did we get here?");
+            }
         }
     }
 
