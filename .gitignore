@@ -1,0 +1,5 @@
+out/
+target/
+src/Data/
+src/settings.txt/
+settings.txt
