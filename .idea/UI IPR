@@ -1,0 +1,81 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ConnectPlusUI extends JFrame {
+
+    private JButton[][] buttons;
+    private int currentPlayer;
+    private boolean playerVsBot;
+    private int difficultyLevel;
+
+    public ConnectPlusUI() {
+        currentPlayer = 1;
+        playerVsBot = false;
+        difficultyLevel = 1;
+
+        initializeUI();
+    }
+
+    private void initializeUI() {
+        setTitle("Connect Plus");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Header Panel
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton userIconButton = new JButton("User Icon");
+        userIconButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openAccountPage();
+            }
+        });
+        headerPanel.add(userIconButton);
+        add(headerPanel, BorderLayout.NORTH);
+
+        // Board Panel
+        JPanel boardPanel = new JPanel(new GridLayout(10, 10));
+        buttons = new JButton[10][10];
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                buttons[i][j] = new JButton();
+                buttons[i][j].setBackground(Color.WHITE);
+                buttons[i][j].setPreferredSize(new Dimension(50, 50));
+                buttons[i][j].addActionListener(new ButtonClickListener(i, j));
+                boardPanel.add(buttons[i][j]);
+            }
+        }
+
+        add(boardPanel, BorderLayout.CENTER);
+
+        // Footer Panel
+        JPanel footerPanel = new JPanel(new FlowLayout());
+        JButton undoButton = new JButton("Undo");
+        undoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Implement undo logic here
+            }
+        });
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exitGame();
+            }
+        });
+        footerPanel.add(undoButton);
+        footerPanel.add(exitButton);
+
+        add(footerPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+        // Display game description
+        showGameDescription();
+    }
