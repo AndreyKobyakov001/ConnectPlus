@@ -24,7 +24,7 @@ public class Bot {
     public static void playGame(Board board, String username, String secondPlayer, char currentPlayer, WinChecker winChecker, int d) {
         while (true) {
             if(!moves.isEmpty()) {
-                board = Game.redo(board, moves);
+                board = Game.reconstruct(board, moves);
             }
             board.displayBoard();
 
@@ -174,7 +174,7 @@ public class Bot {
                 board.makeMove(move, 'O');
                 List<Integer> currentMoves = moves;
                 int eval = minimax(board, depth + 1, false, alpha, beta);
-                board = Game.redo(board, currentMoves);
+                board = Game.reconstruct(board, currentMoves);
 //                board = reconstruct(board, moves);
                 maxEval = Math.max(maxEval, eval);
                 alpha = Math.max(alpha, eval);
@@ -190,7 +190,7 @@ public class Bot {
                 int eval = minimax(board, depth + 1, true, alpha, beta);
 //                System.out.println(moves);
                 List<Integer> currentMoves = moves;
-                board = Game.redo(board, currentMoves);
+                board = Game.reconstruct(board, currentMoves);
                 minEval = Math.min(minEval, eval);
                 beta = Math.min(beta, eval);
                 if (beta <= alpha) {

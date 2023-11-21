@@ -15,8 +15,12 @@ public class User {
     public List<List<Integer>> games;
 
 
-    public User(String username) {
+    public User(String username, String password, int wins, int losses, int elo) {
         this.username = username;
+        this.password = password;
+        this.wins = wins;
+        this.losses = losses;
+        this.eloRating = elo;
     }
     public User(String username, String password, String confirmPassword) throws IllegalArgumentException {
         if (!isValidUsername(username)) {

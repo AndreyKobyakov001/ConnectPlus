@@ -23,7 +23,11 @@ public class FileDAO implements LoginUserDataAccessInterface {
         this.userFactory = userFactory;
 
         csvFile = new File(csvPath);
-        headers.put("username", 0);
+        headers.put("Username", 0);
+        headers.put("Password", 1);
+        headers.put("GamesWon", 2);
+        headers.put("GamesLost", 3);
+        headers.put("ELO", 4);
 //        Username, Password, GamesWon, GamesLost, ELO
 
         if (csvFile.length() == 0) {
@@ -33,13 +37,17 @@ public class FileDAO implements LoginUserDataAccessInterface {
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
 
-                assert header.equals("username,Games Played,elo");
+                assert header.equals("Username, Password, GamesWon, GamesLost, ELO");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
                     String[] col = row.split(",");
-                    String username = String.valueOf(col[headers.get("username")]);
-                    User user = new User(username);
+                    String username = String.valueOf(col[headers.get("Username")]);
+                    String password = String.valueOf(col[headers.get("Password")]);
+                    int GamesWon = Integer.parseInt(col[headers.get("GamesWon")]);
+                    int GamesLost = Integer.parseInt(col[headers.get("GamesLost")]);
+                    int elo = Integer.parseInt(col[headers.get("ELO")]);
+                    User user = new User(username, password, GamesWon, GamesLost, elo);
                     accounts.put(username, user);
                 }
             }
@@ -70,7 +78,7 @@ public class FileDAO implements LoginUserDataAccessInterface {
             writer.newLine();
 
             for (User user : accounts.values()) {
-                String line = String.format("%s", user.getUsername());
+                String line = String.format("%s, %s, %s, %s", user.getUsername(), user.getPassword(), user.getgames(), user.getEloRating());
                 writer.write(line);
                 writer.newLine();
             }
