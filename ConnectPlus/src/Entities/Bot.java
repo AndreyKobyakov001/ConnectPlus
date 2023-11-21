@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 //import static Entities.Game.moves;
 import static Entities.Game.reconstruct;
-import static Entities.Game.redo;
 
 public class Bot {
     private static int MAX_DEPTH = 0;
@@ -191,7 +190,7 @@ public class Bot {
                 int eval = minimax(board, depth + 1, true, alpha, beta);
 //                System.out.println(moves);
                 List<Integer> currentMoves = moves;
-                board = redo(board, currentMoves);
+                board = Game.redo(board, currentMoves);
                 minEval = Math.min(minEval, eval);
                 beta = Math.min(beta, eval);
                 if (beta <= alpha) {
