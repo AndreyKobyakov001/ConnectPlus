@@ -23,7 +23,8 @@ public class Main {
         while (true) {
             if (!signedIn) {
                 handleNotSignedIn();
-            } else {
+            }
+            else {
                 handleSignedIn();
             }
         }
@@ -69,7 +70,7 @@ public class Main {
 
         switch (choice) {
             case "1":
-                User.displayUserStatistics(currentUser);
+                displayUserStatistics(currentUser);
                 break;
             case "2":
                 playGame(currentUser, scanner);
@@ -80,10 +81,16 @@ public class Main {
                 System.out.println("Signed out.");
                 break;
             default:
-                //#TODO: Fix this default; it prints twice without cause.
-                System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+                System.out.println("Try again. Please enter 1, 2, or 3.");
                 break;
         }
+    }
+    private static void displayUserStatistics(String username) {
+        // You can implement the logic to retrieve and display user statistics here.
+        // For now, use a placeholder.
+        System.out.println("\n" + "*****************************************\n" + "\nStatistics for user: " + username);
+        System.out.println("Games won: 1");
+        System.out.println("Games lost: 0" + "\n" + "\n*****************************************\n");
     }
 
     private static void createAccount(Scanner scanner) {

@@ -71,8 +71,7 @@ public class Game {
                     moves.add(column);
                     System.out.println(moves);
                     validInput = true; // Input is valid; exit the loop
-                } catch (NumberFormatException e) {
-                    //#TODO: stop this error message from triggering with a u for undoing a  move
+                } catch (NumberFormatException e) { 
                     System.out.println("Invalid input. Please enter a valid integer for the column.");
                 }
 //
