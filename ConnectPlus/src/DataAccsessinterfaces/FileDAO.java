@@ -24,6 +24,7 @@ public class FileDAO implements LoginUserDataAccessInterface {
 
         csvFile = new File(csvPath);
         headers.put("username", 0);
+//        Username, Password, GamesWon, GamesLost, ELO
 
         if (csvFile.length() == 0) {
             save();

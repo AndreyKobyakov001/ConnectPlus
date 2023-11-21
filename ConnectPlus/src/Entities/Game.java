@@ -14,7 +14,7 @@ public class Game {
     static Board reconstruct(Board board, List<Integer> moves) {
         char currentPlayer = 'X';
         Board newBoard = new Board(board.getHeight(), board.getLength(), board.getPieces());
-        moves.remove(moves.size());
+        moves.remove(moves.size() - 1);
         for (int move : moves) {
             if (newBoard.makeMove(move, currentPlayer)) {
                 currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
@@ -28,7 +28,7 @@ public class Game {
     static Board redo(Board board, List<Integer> moves) {
         char currentPlayer = 'X';
         Board newBoard = new Board(board.getHeight(), board.getLength(), board.getPieces());
-//        moves.remove(moves.size());
+        moves.remove(moves.size());
         for (int move : moves) {
             if (newBoard.makeMove(move, currentPlayer)) {
                 currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
@@ -37,7 +37,6 @@ public class Game {
                 break;
             }
         }
-//        newBoard.displayBoard();
         return newBoard;
     }
     static void playGame(Board board, String username, String secondPlayer, char currentPlayer, WinChecker winChecker) {
@@ -71,7 +70,8 @@ public class Game {
                     moves.add(column);
                     System.out.println(moves);
                     validInput = true; // Input is valid; exit the loop
-                } catch (NumberFormatException e) { 
+                } catch (NumberFormatException e) {
+                    //#TODO: stop this error message from triggering with a u for undoing a  move
                     System.out.println("Invalid input. Please enter a valid integer for the column.");
                 }
 //
