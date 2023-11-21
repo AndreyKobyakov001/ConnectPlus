@@ -123,9 +123,6 @@ public class Player {
                 int d = difficulty.indexOf(secondPlayer.split(" ")[1]) + 1;
                 Bot.playGame(board, username, secondPlayer, currentPlayer, winChecker, d);
             }
-            else {
-                System.out.println("How did we get here?");
-            }
         }
     }
 

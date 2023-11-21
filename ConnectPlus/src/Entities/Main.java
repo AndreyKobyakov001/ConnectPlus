@@ -20,12 +20,37 @@ public class Main {
     static String currentUser = "";
 
     public static void main(String[] args) {
+//        int a = 0;
         while (true) {
             if (!signedIn) {
                 handleNotSignedIn();
             }
             else {
-                handleSignedIn();
+//                handleSignedIn();
+//                a += 1;
+//                System.out.println(a);
+                System.out.println("1. View statistics");
+                System.out.println("2. Play a game");
+                System.out.println("3. Sign out");
+
+                String choice = scanner.nextLine();
+
+                switch (choice) {
+                    case "1":
+                        displayUserStatistics(currentUser);
+                        break;
+                    case "2":
+                        playGame(currentUser, scanner);
+                        break;
+                    case "3":
+                        signedIn = false;
+                        currentUser = "";
+                        System.out.println("Signed out.");
+                        break;
+                    default:
+                        System.out.println("Try again. Please enter 1, 2, or 3.");
+                        break;
+                }
             }
         }
     }
@@ -61,30 +86,30 @@ public class Main {
         }
     }
 
-    static void handleSignedIn() {
-        System.out.println("1. View statistics");
-        System.out.println("2. Play a game");
-        System.out.println("3. Sign out");
-
-        String choice = scanner.nextLine();
-
-        switch (choice) {
-            case "1":
-                displayUserStatistics(currentUser);
-                break;
-            case "2":
-                playGame(currentUser, scanner);
-                break;
-            case "3":
-                signedIn = false;
-                currentUser = "";
-                System.out.println("Signed out.");
-                break;
-            default:
-                System.out.println("Try again. Please enter 1, 2, or 3.");
-                break;
-        }
-    }
+//    static void handleSignedIn() {
+//        System.out.println("1. View statistics");
+//        System.out.println("2. Play a game");
+//        System.out.println("3. Sign out");
+//
+//        String choice = scanner.nextLine();
+//
+//        switch (choice) {
+//            case "1":
+//                displayUserStatistics(currentUser);
+//                break;
+//            case "2":
+//                playGame(currentUser, scanner);
+//                break;
+//            case "3":
+//                signedIn = false;
+//                currentUser = "";
+//                System.out.println("Signed out.");
+//                break;
+//            default:
+//                System.out.println("Try again. Please enter 1, 2, or 3.");
+//                break;
+//        }
+//    }
     private static void displayUserStatistics(String username) {
         // You can implement the logic to retrieve and display user statistics here.
         // For now, use a placeholder.

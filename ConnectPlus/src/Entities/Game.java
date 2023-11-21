@@ -25,20 +25,20 @@ public class Game {
         }
         return newBoard;
     }
-    static Board redo(Board board, List<Integer> moves) {
-        char currentPlayer = 'X';
-        Board newBoard = new Board(board.getHeight(), board.getLength(), board.getPieces());
-        moves.remove(moves.size());
-        for (int move : moves) {
-            if (newBoard.makeMove(move, currentPlayer)) {
-                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
-            } else {
-                System.out.println("Invalid move during reconstruction.");
-                break;
-            }
-        }
-        return newBoard;
-    }
+//    static Board redo(Board board, List<Integer> moves) {
+//        char currentPlayer = 'X';
+//        Board newBoard = new Board(board.getHeight(), board.getLength(), board.getPieces());
+//        moves.remove(moves.size() - 1);
+//        for (int move : moves) {
+//            if (newBoard.makeMove(move, currentPlayer)) {
+//                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+//            } else {
+//                System.out.println("Invalid move during reconstruction.");
+//                break;
+//            }
+//        }
+//        return newBoard;
+//    }
     static void playGame(Board board, String username, String secondPlayer, char currentPlayer, WinChecker winChecker) {
         while (true) {
             board.displayBoard();
