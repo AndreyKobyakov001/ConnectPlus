@@ -6,7 +6,7 @@ import java.util.regex.*;
 
 public class User {
     private String username;
-    private String password;
+    private String name;
     private String email;
     private int wins;
     private int losses;
@@ -14,32 +14,31 @@ public class User {
 
     public List<List<Integer>> games;
 
-
-    public User(String username, String password, int wins, int losses, int elo) {
+    public User(String username, String name, int wins, int losses, int elo){
         this.username = username;
-        this.password = password;
+        this.name = name;
+
         this.wins = wins;
         this.losses = losses;
         this.eloRating = elo;
     }
-    public User(String username, String password, String confirmPassword) throws IllegalArgumentException {
-        if (!isValidUsername(username)) {
-            throw new IllegalArgumentException("Username is invalid or already exists.");
-        }
 
-        if (!isValidPassword(password, confirmPassword)) {
-            throw new IllegalArgumentException("Password requirements not met.");
-        }
-
-        this.games = new ArrayList<>();
+    public User(String username, String name){
         this.username = username;
-        this.password = password;
+        this.name = name;
+
         this.wins = 0;
         this.losses = 0;
-        this.eloRating = 1000; // Initial ELO rating, you can set it to any default value you prefer.
+        this.eloRating = 1000;
     }
 
+
     public User(String id) {
+        this.username = id;
+
+        this.wins = 0;
+        this.losses = 0;
+        this.eloRating = 1000;
     }
 
     // Getters and setters for username, password, wins, losses, and eloRating
@@ -51,13 +50,6 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public int getWins() {
         return wins;
@@ -133,5 +125,12 @@ public class User {
     }
     public String getemail(){
         return this.email;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+    public String setName(String name){
+        return this.name = name;
     }
 }

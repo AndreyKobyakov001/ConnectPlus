@@ -1,8 +1,7 @@
-package Views;
+package view;
 
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.ViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +22,7 @@ public class ViewManager implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("Views")) {
+        if (evt.getPropertyName().equals("view")) {
             String viewModelName = (String) evt.getNewValue();
             cardLayout.show(views, viewModelName);
         }

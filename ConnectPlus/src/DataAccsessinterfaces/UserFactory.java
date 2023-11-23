@@ -7,10 +7,7 @@ import java.util.ArrayList;
 
 public class UserFactory {
 
-    public User create(String name, String password, String hm, int elo, String games) {
-        User user = new User(name, password, password);
-        user.setEloRating(elo);
-        user.setgames(games);
-        return user;
+    public User create(String id, String name, int wins, int losses, int elo) {
+        return new User(id, name, wins, losses, elo);
     }
 }

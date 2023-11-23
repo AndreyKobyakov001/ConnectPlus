@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FileDAO implements LoginUserDataAccessInterface {
-        private final File csvFile;
+    private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
 
@@ -43,11 +43,11 @@ public class FileDAO implements LoginUserDataAccessInterface {
                 while ((row = reader.readLine()) != null) {
                     String[] col = row.split(",");
                     String username = String.valueOf(col[headers.get("Username")]);
-                    String password = String.valueOf(col[headers.get("Password")]);
+                    String name = String.valueOf(col[headers.get("Name")]);
                     int GamesWon = Integer.parseInt(col[headers.get("GamesWon")]);
                     int GamesLost = Integer.parseInt(col[headers.get("GamesLost")]);
                     int elo = Integer.parseInt(col[headers.get("ELO")]);
-                    User user = new User(username, password, GamesWon, GamesLost, elo);
+                    User user = new User(username, name, GamesWon, GamesLost, elo);
                     accounts.put(username, user);
                 }
             }
@@ -78,7 +78,7 @@ public class FileDAO implements LoginUserDataAccessInterface {
             writer.newLine();
 
             for (User user : accounts.values()) {
-                String line = String.format("%s, %s, %s, %s", user.getUsername(), user.getPassword(), user.getgames(), user.getEloRating());
+                String line = String.format("%s, %s, %s, %s", user.getUsername(), user.getName(), user.getgames(), user.getEloRating());
                 writer.write(line);
                 writer.newLine();
             }
