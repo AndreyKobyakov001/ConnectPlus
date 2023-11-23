@@ -1,5 +1,7 @@
 package Entities;
 
+import use_case.setup.SetupInteractor;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -114,7 +116,7 @@ public class Player {
 
             char currentPlayer = 'X';
             if(!bot) {
-                Game.playGame(board, username, secondPlayer, currentPlayer, winChecker);
+                SetupInteractor.playGame(board, username, secondPlayer, currentPlayer, winChecker);
             }
             if(bot) {
                 System.out.println("Bot Game!");
