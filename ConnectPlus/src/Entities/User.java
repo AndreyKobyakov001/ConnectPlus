@@ -39,6 +39,9 @@ public class User {
         this.eloRating = 1000; // Initial ELO rating, you can set it to any default value you prefer.
     }
 
+    public User(String id) {
+    }
+
     // Getters and setters for username, password, wins, losses, and eloRating
     public String getUsername() {
         return username;

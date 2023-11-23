@@ -113,9 +113,14 @@ public class SetupInteractor {
         Board board = new Board(inputData.getWidth(), inputData.getHeight(), inputData.getPieces());
         WinChecker w = new WinChecker(inputData.getPieces(), board.getBoard());
         playGame(board, inputData.getFirstPlayer(), inputData.getOtherPlayer(), 'X', w);
-
     }
 
+    //Use cases - lives in execute; logic in interactors with helpers - interactor for each use case based on extant logic:
+    // initialize game
+    // make move and undo
+    // wincheck - win or loss or tie
+    // resign option
+    // return to main screen
 
 
 }
