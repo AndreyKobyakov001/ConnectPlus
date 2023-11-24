@@ -35,39 +35,34 @@ public class LoginInteractor implements LoginInputBoundary{
         this.loginPresenter = loginOutputBoundary;
 
     }
-    public LoginInteractor(){ //STRICTLY FOR TESTING PURPOSES!!
-        this.userDataAccessObject = null;
-        this.loginPresenter = null;
+
+
+    public void execute() {
+        try {
+            WebDriver driver = initualizeServer();
+            String auth = getToken(driver);
+            User loggedUser = loggedUser(getAccessToken(auth)); //get the attempting user
+            if (userDataAccessObject.existsByName(loggedUser.getUsername())){ //if the user exists in the database
+                loggedUser = userDataAccessObject.getUser(loggedUser.getUsername());
+            }
+            else{
+                userDataAccessObject.saveUser(loggedUser);
+            }
+            if (getLoggedInUser() == null) {
+                loginPresenter.prepareSuccessView(new LoginOutputData(loggedUser.getName(), loggedUser.getWins(),
+                        loggedUser.getLosses(), loggedUser.getEloRating()));
+                LoggedInUser.logIn(loggedUser);
+            }
+            else {
+                loginPresenter.prepareFailView("Someone is already logged in. Realistically, this should never happen.");
+                System.out.println("Someone is already logged in. Realistically, this should never happen.");
+            }
+        }
+        catch (Exception e){
+            System.out.println("Error in getting token");
+        }
     }
 
-    public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface){ //STRICTLY FOR TESTING PURPOSES!!
-        this.userDataAccessObject = userDataAccessInterface;
-        this.loginPresenter = null;
-    }
-
-    public void execute() throws Exception{
-        WebDriver driver = initualizeServer();
-        String auth = getToken(driver);
-        User loggedUser = loggedUser(getAccessToken(auth)); //get the attempting user
-        if (userDataAccessObject.existsByName(loggedUser.getUsername())){ //if the user exists in the database
-            loggedUser = userDataAccessObject.getUser(loggedUser.getUsername());
-        }
-        else{
-            userDataAccessObject.saveUser(loggedUser);
-//            loginPresenter.prepareSuccessView(new LoginOutputData(loggedUser.getName(), true));
-        }
-        if (getLoggedInUser() == null) {
-            //TODO: prepare success view
-            LoggedInUser.logIn(loggedUser);
-        }
-        else {
-            //TODO: Prepare fail view
-            System.out.println("Someone is already logged in. Realistically, this should never happen.");
-        }
-
-
-
-    }
     public WebDriver initualizeServer() throws Exception{
         char[] keystorePassword = "password".toCharArray();
         KeyStore keystore = KeyStore.getInstance("JKS");
@@ -200,10 +195,10 @@ public class LoginInteractor implements LoginInputBoundary{
         String id = myResponse.getString("id");
         String name = myResponse.getString("name");
         String email = myResponse.getString("email");
-        String picture = myResponse.getString("picture");
+//        String picture = myResponse.getString("picture");
         User user = new User(id);
         user.setEmail(email);
-        //user.setName(name);
+        user.setName(name);
         //user.setPicture(picture);
         return user;
 
