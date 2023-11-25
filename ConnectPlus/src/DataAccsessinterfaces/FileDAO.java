@@ -1,6 +1,7 @@
 package DataAccsessinterfaces;
 
 import Entities.User;
+import use_case.login.LoginUserDataAccessInterface;
 
 import java.awt.*;
 import java.io.*;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class FileDAO{
+public class FileDAO implements LoginUserDataAccessInterface {
     private final File csvFile;
 
     private final Map<String, Integer> headers = new LinkedHashMap<>();
@@ -22,10 +23,12 @@ public class FileDAO{
         this.userFactory = userFactory;
 
         csvFile = new File(csvPath);
-        headers.put("username", 0);
-        headers.put("password", 1);
-        headers.put("Games Played", 2);
-        headers.put("elo", 3);
+        headers.put("Username", 0);
+        headers.put("Password", 1);
+        headers.put("GamesWon", 2);
+        headers.put("GamesLost", 3);
+        headers.put("ELO", 4);
+//        Username, Password, GamesWon, GamesLost, ELO
 
         if (csvFile.length() == 0) {
             save();
@@ -34,16 +37,17 @@ public class FileDAO{
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
 
-                assert header.equals("username,Games Played,elo");
+                assert header.equals("Username, Password, GamesWon, GamesLost, ELO");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
                     String[] col = row.split(",");
-                    String username = String.valueOf(col[headers.get("username")]);
-                    String password = String.valueOf(col[headers.get("password")]);
-                    String Games = col[headers.get("Games Played")];
-                    String elo = String.valueOf(col[headers.get("elo")]);
-                    User user = userFactory.create(username, password, password, Integer.parseInt(elo), Games);
+                    String username = String.valueOf(col[headers.get("Username")]);
+                    String name = String.valueOf(col[headers.get("Name")]);
+                    int GamesWon = Integer.parseInt(col[headers.get("GamesWon")]);
+                    int GamesLost = Integer.parseInt(col[headers.get("GamesLost")]);
+                    int elo = Integer.parseInt(col[headers.get("ELO")]);
+                    User user = new User(username, name, GamesWon, GamesLost, elo);
                     accounts.put(username, user);
                 }
             }
@@ -51,18 +55,18 @@ public class FileDAO{
     }
 
 
-    public void saveuser(User user) {
+    public void saveUser(User user) {
         accounts.put(user.getUsername(), user);
         this.save();
     }
 
 
-    public String getusers(){
+    public String getUsers(){
         return accounts.keySet().toString();
     }
 
 
-    public User getuser(String username) {
+    public User getUser(String username) {
         return accounts.get(username);
     }
 
@@ -74,8 +78,7 @@ public class FileDAO{
             writer.newLine();
 
             for (User user : accounts.values()) {
-                String line = String.format("%s,%s,%s,%s",
-                        user.getUsername(), user.getPassword(), user.getgames(), user.getEloRating());
+                String line = String.format("%s, %s, %s, %s", user.getUsername(), user.getName(), user.getgames(), user.getEloRating());
                 writer.write(line);
                 writer.newLine();
             }

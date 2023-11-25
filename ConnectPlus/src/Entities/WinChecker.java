@@ -10,6 +10,7 @@ public class WinChecker {
     }
 
     public boolean checkWin(char playerSymbol) {
+        System.out.println("Checking");
         int length = board[0].length;
         int height = board.length;
 

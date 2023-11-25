@@ -1,4 +1,4 @@
-package Views;
+package view;
 
 import Entities.User;
 import javax.swing.JPanel;
@@ -26,6 +26,8 @@ public class EndView extends JPanel implements ActionListener, PropertyChangeLis
     private JLabel goodgame = new JLabel("Create new Account");
 
     public EndView(User user){
+        panel.setBorder(BorderFactory.createEmptyBorder(200, 100, 200, 100));
+        panel.setLayout(new GridLayout(0, 1));
         goodgame.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         frame.add(panel, BorderLayout.CENTER);
@@ -76,4 +78,8 @@ public class EndView extends JPanel implements ActionListener, PropertyChangeLis
     public void propertyChange(PropertyChangeEvent evt) {
 
     }
+    public static void main(String[] args) {
+        new EndView(new User("hello"));
+    }
 }
+
