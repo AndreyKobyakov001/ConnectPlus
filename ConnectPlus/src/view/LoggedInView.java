@@ -21,6 +21,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     JLabel elo;
 
     final JButton logOut;
+    final JButton play;
 
     /**
      * A window with a title and a JButton.
@@ -42,11 +43,26 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
         elo = new JLabel();
 
 
+
+
         JPanel buttons = new JPanel();
         logOut = new JButton(loggedInViewModel.LOGOUT_BUTTON_LABEL);
         buttons.add(logOut);
 
-        logOut.addActionListener(this);
+        logOut.addActionListener(this); //TODO
+
+        play = new JButton(loggedInViewModel.PLAY_BUTTON_LABEL);
+        buttons.add(play);
+        play.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource() == play) {
+                            ViewManager.setActiveView("game build");
+                        }
+                    }
+                }
+        );
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

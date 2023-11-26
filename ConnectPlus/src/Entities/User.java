@@ -23,16 +23,6 @@ public class User {
         this.eloRating = elo;
     }
 
-    public User(String username, String name){
-        this.username = username;
-        this.name = name;
-
-        this.wins = 0;
-        this.losses = 0;
-        this.eloRating = 1000;
-    }
-
-
     public User(String id) {
         this.username = id;
 
