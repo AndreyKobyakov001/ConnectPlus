@@ -56,9 +56,8 @@ public class Main {
         LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loggedInViewModel, userDataAccessObject);
         views.add(loginView, loginView.viewName);
 
-//        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
-//        LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel);
-//        views.add(loggedInView, loggedInView.viewName);
+        LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel);
+        views.add(loggedInView, loggedInView.viewName);
         //TODO: logged in menu backend
 
         GameBuildView gameBuildView = GameBuildUseCaseFactory.create(gameBuildViewModel);

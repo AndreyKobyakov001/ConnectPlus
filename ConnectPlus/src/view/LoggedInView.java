@@ -1,7 +1,9 @@
 package view;
 
+import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
+import use_case.logged_in.LoggedInInputBoundary;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +13,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class LoggedInView extends JPanel implements ActionListener, PropertyChangeListener {
-
     public final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
+
+    private final LoggedInController loggedInController;
 
     JLabel name;
     JLabel wins;
@@ -26,9 +29,10 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     /**
      * A window with a title and a JButton.
      */
-    public LoggedInView(LoggedInViewModel loggedInViewModel) {
+    public LoggedInView(LoggedInViewModel loggedInViewModel, LoggedInController loggedInController) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
+        this.loggedInController = loggedInController;
 
         JLabel title = new JLabel("Logged In Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -58,7 +62,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource() == play) {
-                            ViewManager.setActiveView("game build");
+                            loggedInController.play();
                         }
                     }
                 }

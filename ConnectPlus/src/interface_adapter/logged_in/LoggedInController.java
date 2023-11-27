@@ -1,11 +1,17 @@
 package interface_adapter.logged_in;
 
+import use_case.logged_in.LoggedInInputBoundary;
+
 public class LoggedInController {
 
-
-    public LoggedInController() {
+    final LoggedInInputBoundary loggedInUseCaseInteractor;
+    public LoggedInController(LoggedInInputBoundary loggedInUseCaseInteractor) {
+        this.loggedInUseCaseInteractor = loggedInUseCaseInteractor;
     }
 
+    public void play() {
+        loggedInUseCaseInteractor.play();
+    }
 
 
 //    public void back() {
