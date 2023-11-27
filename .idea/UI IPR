@@ -79,3 +79,234 @@ public class ConnectPlusUI extends JFrame {
         // Display game description
         showGameDescription();
     }
+
+
+
+public class Main {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            AppFrame appFrame = new AppFrame();
+            appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            appFrame.setSize(800, 600);
+            appFrame.setVisible(true);
+        });
+    }
+}
+
+
+// have to seperate the code below to different files
+import javax.swing.*;
+
+public class AppFrame extends JFrame {
+    private AppPanel appPanel;
+
+    public AppFrame() {
+        setTitle("Connect Plus Game");
+        appPanel = new AppPanel(this);
+        add(appPanel);
+    }
+
+    public void showGameBoard(int gridSize, int connect, boolean vsBot) {
+        getContentPane().removeAll();
+        GameBoardPanel gameBoardPanel = new GameBoardPanel(gridSize, connect, vsBot, this);
+        add(gameBoardPanel);
+        revalidate();
+        repaint();
+    }
+
+    public void showResult(boolean isWinner, String loggedInUser) {
+        getContentPane().removeAll();
+        ResultPanel resultPanel = new ResultPanel(isWinner, loggedInUser, this);
+        add(resultPanel);
+        revalidate();
+        repaint();
+    }
+}
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class AppPanel extends JPanel {
+    private JButton startButton;
+    private JComboBox<String> gridSizeComboBox;
+    private JComboBox<String> connectComboBox;
+    private JCheckBox vsBotCheckBox;
+    private AppFrame appFrame;
+
+    public AppPanel(AppFrame appFrame) {
+        this.appFrame = appFrame;
+        setLayout(new BorderLayout());
+        initializeComponents();
+        addComponentsToPanel();
+        addEventListeners();
+    }
+
+    private void initializeComponents() {
+        startButton = new JButton("Start Game");
+        gridSizeComboBox = new JComboBox<>(new String[]{"3x3", "4x4", "5x5"}); // Add more options as needed
+        connectComboBox = new JComboBox<>(new String[]{"2", "3", "4"}); // Add more options as needed
+        vsBotCheckBox = new JCheckBox("Player vs. Bot");
+    }
+
+    private void addComponentsToPanel() {
+        JPanel settingsPanel = new JPanel();
+        settingsPanel.add(new JLabel("Grid Size:"));
+        settingsPanel.add(gridSizeComboBox);
+        settingsPanel.add(new JLabel("Connect:"));
+        settingsPanel.add(connectComboBox);
+        settingsPanel.add(vsBotCheckBox);
+        settingsPanel.add(startButton);
+
+        add(settingsPanel, BorderLayout.NORTH);
+    }
+
+    private void addEventListeners() {
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String gridSize = (String) gridSizeComboBox.getSelectedItem();
+                String connect = (String) connectComboBox.getSelectedItem();
+                boolean vsBot = vsBotCheckBox.isSelected();
+                appFrame.showGameBoard(Integer.parseInt(gridSize.substring(0, 1)), Integer.parseInt(connect), vsBot);
+            }
+        });
+    }
+}
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class GameBoardPanel extends JPanel {
+    private AppFrame appFrame;
+    private JButton undoButton;
+    private JButton exitButton;
+
+    public GameBoardPanel(int gridSize, int connect, boolean vsBot, AppFrame appFrame) {
+        this.appFrame = appFrame;
+        setLayout(new BorderLayout());
+        initializeComponents();
+        addComponentsToPanel(gridSize, connect);
+        addEventListeners();
+    }
+
+    private void initializeComponents() {
+        undoButton = new JButton("Undo Move");
+        exitButton = new JButton("Exit Game");
+    }
+
+    private void addComponentsToPanel(int gridSize, int connect) {
+        // TODO: Implement game board UI based on gridSize, connect, and vsBot
+        // Example: Create a grid of buttons based on gridSize
+
+        JPanel boardPanel = new JPanel(new GridLayout(gridSize, gridSize));
+
+        for (int i = 0; i < gridSize * gridSize; i++) {
+            JButton button = new JButton(" "); // Empty initial state
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // TODO: Implement button click functionality
+                    // Update the game state based on the clicked button
+                }
+            });
+            boardPanel.add(button);
+        }
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(undoButton);
+        buttonPanel.add(exitButton);
+
+        add(boardPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void addEventListeners() {
+        undoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement undo move functionality
+            }
+        });
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement exit game functionality
+                appFrame.showResult(false, null); // Assuming the player lost
+            }
+        });
+    }
+}
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ResultPanel extends JPanel {
+    private AppFrame appFrame;
+    private JButton playAgainButton;
+    private JButton exitButton;
+
+    public ResultPanel(boolean isWinner, String loggedInUser, AppFrame appFrame) {
+        this.appFrame = appFrame;
+        setLayout(new BorderLayout());
+        initializeComponents(isWinner, loggedInUser);
+        addComponentsToPanel();
+        addEventListeners();
+    }
+
+    private void initializeComponents(boolean isWinner, String loggedInUser) {
+        JLabel resultLabel;
+        if (isWinner) {
+            resultLabel = new JLabel("Congratulations! You won!");
+        } else {
+            resultLabel = new JLabel("You lost. Better luck next time!");
+        }
+
+        JLabel userLabel = new JLabel("Player: " + loggedInUser);
+
+        playAgainButton = new JButton("Play Again");
+        exitButton = new JButton("Exit");
+
+        JPanel resultPanel = new JPanel(new GridLayout(3, 1));
+        resultPanel.add(resultLabel);
+        resultPanel.add(userLabel);
+        resultPanel.add(new JLabel(""));
+
+        add(resultPanel, BorderLayout.CENTER);
+    }
+
+    private void addComponentsToPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(playAgainButton);
+        buttonPanel.add(exitButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void addEventListeners() {
+        playAgainButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement play again functionality
+                appFrame.showGameBoard(3, 3, false); // Update with the default values
+            }
+        });
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement exit game functionality
+                System.exit(0);
+            }
+        });
+    }
+}
+
+
