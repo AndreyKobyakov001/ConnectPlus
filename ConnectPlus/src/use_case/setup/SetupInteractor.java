@@ -1,7 +1,7 @@
 //package use_case.setup;
 //import Entities.Board;
 //import Entities.Game;
-//import Entities.MainOld;
+////import Entities.MainOld;
 //import Entities.WinChecker;
 //
 //public class SetupInteractor {
@@ -50,7 +50,7 @@
 //                        String winnerName = (otherPlayer == 'X') ? username : secondPlayer;
 //                        String loserName = (otherPlayer == 'X') ? secondPlayer : username;
 //                        System.out.println("Entities.Player " + winnerName + " wins! (Entities.Player " + loserName + " quit)");
-//                        MainOld.winner(winnerName, loserName);
+////                        MainOld.winner(winnerName, loserName);
 //                        return; // Exit the game
 //                    }
 //
@@ -76,12 +76,12 @@
 //                }
 //
 //                if (board.makeMove(column, currentPlayer)) {
-//                    if (winChecker.checkWin(currentPlayer)) {
+////                    if (winCheckerker.checkWin(currentPlayer)) {
 //                        board.displayBoard();
 //                        String winnerName = (currentPlayer == 'X') ? username : secondPlayer;
 //                        String loserName = (currentPlayer == 'X') ? secondPlayer : username;
 //                        System.out.println("Entities.Player " + winnerName + " wins!");
-//                        MainOld.winner(winnerName, loserName);
+////                        MainOld.winner(winnerName, loserName);
 //                        break;
 //                    } else if (board.isFull()) {
 //                        board.displayBoard();
