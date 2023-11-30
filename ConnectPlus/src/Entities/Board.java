@@ -15,7 +15,8 @@ public class Board {
     }
     public int getHeight() {
         return height;
-    }public int getPieces() {
+    }
+    public int getPieces() {
         return piecesToConnect;
     }
 
@@ -85,7 +86,7 @@ public class Board {
         return score;
     }
 
-    List<Integer> generateLegalMoves() {
+    public List<Integer> generateLegalMoves() {
         List<Integer> legalMoves = new ArrayList<>();
 
         for (int column = 0; column < length; column++) {
@@ -104,9 +105,6 @@ public class Board {
 
 
     public Board(int length, int height, int piecesToConnect) {
-        if (length < 2 || length > 10 || height < 2 || height > 10 || piecesToConnect < 2 || piecesToConnect > 9) {
-            throw new IllegalArgumentException("Invalid board dimensions or pieces to connect.");
-        } //TODO: throw this in the controller
 
         this.length = length;
         this.height = height;
@@ -123,6 +121,10 @@ public class Board {
                 board[i][j] = '?'; // Initialize the board with '?' for empty squares
             }
         }
+    }
+
+    public BoardState getState() {
+        return new BoardState(board);
     }
 
     public void displayBoard() {

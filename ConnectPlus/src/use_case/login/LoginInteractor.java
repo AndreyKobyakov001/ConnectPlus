@@ -59,7 +59,7 @@ public class LoginInteractor implements LoginInputBoundary{
             }
         }
         catch (Exception e){
-            System.out.println("Error in getting token");
+            e.printStackTrace();
         }
     }
 
