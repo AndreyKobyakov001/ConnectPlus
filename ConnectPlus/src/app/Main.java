@@ -2,6 +2,8 @@ package app;
 
 import DataAccsessinterfaces.FileDAO;
 import DataAccsessinterfaces.UserFactory;
+import interface_adapter.GameBuild.GameBuildViewModel;
+import view.GameBuildView;
 import view.LoggedInView;
 import view.LoginView;
 import view.ViewManager;
@@ -39,9 +41,11 @@ public class Main {
         // be observed by the Views.
         LoginViewModel loginViewModel = new LoginViewModel();
         LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
+        GameBuildViewModel gameBuildViewModel = new GameBuildViewModel();
 
 
         FileDAO userDataAccessObject;
+        //TODO: access the file if already exists
         try {
             userDataAccessObject = new FileDAO("./users.csv", new UserFactory());
         } catch (IOException e) {
@@ -52,8 +56,12 @@ public class Main {
         LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loggedInViewModel, userDataAccessObject);
         views.add(loginView, loginView.viewName);
 
-        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
+        LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel);
         views.add(loggedInView, loggedInView.viewName);
+        //TODO: logged in menu backend
+
+        GameBuildView gameBuildView = GameBuildUseCaseFactory.create(gameBuildViewModel);
+        views.add(gameBuildView, gameBuildView.viewName);
 
         viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();

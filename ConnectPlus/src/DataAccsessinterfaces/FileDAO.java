@@ -24,7 +24,7 @@ public class FileDAO implements LoginUserDataAccessInterface {
 
         csvFile = new File(csvPath);
         headers.put("Username", 0);
-        headers.put("Password", 1);
+        headers.put("Name", 1);
         headers.put("GamesWon", 2);
         headers.put("GamesLost", 3);
         headers.put("ELO", 4);
@@ -37,17 +37,20 @@ public class FileDAO implements LoginUserDataAccessInterface {
             try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String header = reader.readLine();
 
-                assert header.equals("Username, Password, GamesWon, GamesLost, ELO");
+                assert header.equals("Username, Name, GamesWon, GamesLost, ELO");
 
                 String row;
                 while ((row = reader.readLine()) != null) {
                     String[] col = row.split(",");
                     String username = String.valueOf(col[headers.get("Username")]);
                     String name = String.valueOf(col[headers.get("Name")]);
-                    int GamesWon = Integer.parseInt(col[headers.get("GamesWon")]);
-                    int GamesLost = Integer.parseInt(col[headers.get("GamesLost")]);
-                    int elo = Integer.parseInt(col[headers.get("ELO")]);
-                    User user = new User(username, name, GamesWon, GamesLost, elo);
+                    String GamesWon = String.valueOf(col[headers.get("GamesWon")]);
+                    String GamesLost = String.valueOf(col[headers.get("GamesLost")]);
+                    String elo =  String.valueOf(col[headers.get("ELO")]);
+                    User user = new User(username, name,
+                            Integer.parseInt(GamesWon),
+                            Integer.parseInt(GamesLost),
+                            Integer.parseInt(elo));
                     accounts.put(username, user);
                 }
             }
@@ -78,7 +81,7 @@ public class FileDAO implements LoginUserDataAccessInterface {
             writer.newLine();
 
             for (User user : accounts.values()) {
-                String line = String.format("%s, %s, %s, %s", user.getUsername(), user.getName(), user.getgames(), user.getEloRating());
+                String line = String.format("%s, %s, %s, %s, %s", user.getUsername(), user.getName(), user.getWins(), user.getLosses(), user.getEloRating());
                 writer.write(line);
                 writer.newLine();
             }
