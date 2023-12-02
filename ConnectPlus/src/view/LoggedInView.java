@@ -55,6 +55,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
 
         logOut.addActionListener(this); //TODO
 
+
         play = new JButton(loggedInViewModel.PLAY_BUTTON_LABEL);
         buttons.add(play);
         play.addActionListener(
@@ -87,7 +88,9 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
      */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
-    }
+        if (evt.getSource() == logOut) {
+            loggedInController.logout();
+        }    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
