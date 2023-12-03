@@ -89,7 +89,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
         if (evt.getSource() == logOut) {
-            loggedInController.logout();
+            return;
         }    }
 
     @Override

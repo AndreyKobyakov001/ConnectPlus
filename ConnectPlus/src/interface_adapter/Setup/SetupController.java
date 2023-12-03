@@ -10,8 +10,22 @@ public class SetupController {
             this.setupUseCaseInteractor = setupUseCaseInteractor;
         }
 
-        public void startGame(GameBuildOutputData setupInputData) {
-            setupUseCaseInteractor.startGame(setupInputData);
+        public void makeMove(int column, String playerName) {
+            setupUseCaseInteractor.makeMove(column, playerName);
         }
+
+        public void undoMove() {
+            setupUseCaseInteractor.undoMove();
+        }
+
+        public void forfeitGame() {
+            setupUseCaseInteractor.forfeitGame();
+        }
+
+
+
+
+
+
 
 }

@@ -13,9 +13,7 @@ public class LoggedInController {
         loggedInUseCaseInteractor.play();
     }
 
-    public void logout() {
-        LoggedInViewModel.setLoggedInUser(null);
-    }
+
 
 
 //    public void back() {

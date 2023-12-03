@@ -1,10 +1,13 @@
 package Entities;
 
-public class Bot extends Player{
+import java.util.List;
+import java.util.ArrayList;
+
+public class Bot extends Player {
     private int difficulty;
 
-    public Bot(String name, BoardState boardState, Character symbol, int difficulty) {
-        super(name, boardState, symbol);
+    public Bot(String name, Character symbol, int difficulty) {
+        super(name, symbol);
         this.difficulty = difficulty;
     }
 
@@ -12,10 +15,4 @@ public class Bot extends Player{
         return difficulty;
     }
 
-    public void move() {
-
-    }
 }
-
-
-// TODO: apply the bot classes here.

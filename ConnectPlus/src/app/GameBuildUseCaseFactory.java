@@ -3,6 +3,7 @@ package app;
 import interface_adapter.GameBuild.GameBuildController;
 import interface_adapter.GameBuild.GameBuildPresenter;
 import interface_adapter.GameBuild.GameBuildViewModel;
+import interface_adapter.Setup.SetupViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import use_case.GameBuild.GameBuildInputBoundary;
@@ -16,9 +17,9 @@ public class GameBuildUseCaseFactory {
 
     private GameBuildUseCaseFactory() {}
 
-    public static GameBuildView create(GameBuildViewModel gameBuildViewModel) {
+    public static GameBuildView create(GameBuildViewModel gameBuildViewModel, LoggedInViewModel loggedInViewModel, ViewManagerModel viewManagerModel, SetupViewModel setupViewModel ) {
         try{
-            GameBuildController gameBuildController = createGameBuildUseCase(gameBuildViewModel, new LoggedInViewModel(), new ViewManagerModel());
+            GameBuildController gameBuildController = createGameBuildUseCase(gameBuildViewModel, loggedInViewModel, viewManagerModel, setupViewModel);
             return new GameBuildView(gameBuildController, gameBuildViewModel);
 
         } catch (Exception e) {
@@ -26,8 +27,8 @@ public class GameBuildUseCaseFactory {
         } return null;
     }
 
-    private static GameBuildController createGameBuildUseCase(GameBuildViewModel gameBuildViewModel, LoggedInViewModel loggedInViewModel, ViewManagerModel viewManagerModel) {
-        GameBuildOutputBoundary gameBuildOutputBoundary = new GameBuildPresenter(gameBuildViewModel, loggedInViewModel, viewManagerModel);
+    private static GameBuildController createGameBuildUseCase(GameBuildViewModel gameBuildViewModel, LoggedInViewModel loggedInViewModel, ViewManagerModel viewManagerModel, SetupViewModel setupViewModel) {
+        GameBuildOutputBoundary gameBuildOutputBoundary = new GameBuildPresenter(gameBuildViewModel, loggedInViewModel, viewManagerModel, setupViewModel);
         GameBuildInputBoundary gameBuildInteractor = new GameBuildInteractor(gameBuildOutputBoundary);
         return new GameBuildController(gameBuildInteractor);
     }

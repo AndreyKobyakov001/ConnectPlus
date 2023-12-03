@@ -1,5 +1,6 @@
 package interface_adapter.GameBuild;
 
+import interface_adapter.Setup.SetupViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import use_case.GameBuild.GameBuildOutputBoundary;
@@ -10,16 +11,17 @@ public class GameBuildPresenter implements GameBuildOutputBoundary {
 
     private final GameBuildViewModel gameBuildViewModel;
 
-//    private final GameViewModel gameViewModel; //TODO: it's yours @Andrei, put it in constructor too.
+    private final SetupViewModel setupGameModel;
 
     private final LoggedInViewModel loggedInViewModel;
 
     private ViewManagerModel viewManagerModel;
 
-    public GameBuildPresenter(GameBuildViewModel gameBuildViewModel, LoggedInViewModel loggedInViewModel, ViewManagerModel viewManagerModel) {
+    public GameBuildPresenter(GameBuildViewModel gameBuildViewModel, LoggedInViewModel loggedInViewModel, ViewManagerModel viewManagerModel, SetupViewModel setupViewModel) {
         this.gameBuildViewModel = gameBuildViewModel;
         this.loggedInViewModel = loggedInViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.setupGameModel = setupViewModel;
     }
 
     @Override
@@ -30,13 +32,13 @@ public class GameBuildPresenter implements GameBuildOutputBoundary {
 
     @Override
     public void displayPVP(GameBuildOutputData gameBuildOutputData){
-//        this.viewManagerModel.setActiveView(gameViewModel.getViewName());
+        this.viewManagerModel.setActiveView(setupGameModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 
     @Override //TODO: same with displayPVP, initialize game using outputdata and set active view to gameview, then let them play
     public void displayPVB(GameBuildOutputData gameBuildOutputData){
-//        this.viewManagerModel.setActiveView(gameViewModel.getViewName());
+        this.viewManagerModel.setActiveView(setupGameModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 

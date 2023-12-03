@@ -106,7 +106,7 @@ public class LoginInteractor implements LoginInputBoundary{
         });
         server.start();
         System.out.println("Server started on port 8000");
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe"); //https://googlechromelabs.github.io/chrome-for-testing/#stable
+        System.setProperty("webdriver.chrome.driver", "ConnectPlus/chromedriver"); //https://googlechromelabs.github.io/chrome-for-testing/#stable
         return new ChromeDriver();
 
     }

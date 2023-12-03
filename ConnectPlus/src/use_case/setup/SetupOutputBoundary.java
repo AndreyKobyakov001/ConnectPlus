@@ -7,4 +7,6 @@ public interface SetupOutputBoundary {
 
 
     public void endGame(SetupOutputData outputData);
+
+    void illegalMove();
 }

@@ -99,6 +99,7 @@ public class SetUpInteractor implements SetupInputBoundary {
 
     private void updatePresenterWithStartGame() {
         SetupOutputData outputData = createOutputData();
+        outputData.setPlayer1Turn(true); // Who goes first?
         presenter.startGame(outputData);
     }
 

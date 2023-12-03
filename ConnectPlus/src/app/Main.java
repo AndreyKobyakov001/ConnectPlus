@@ -3,10 +3,8 @@ package app;
 import DataAccsessinterfaces.FileDAO;
 import DataAccsessinterfaces.UserFactory;
 import interface_adapter.GameBuild.GameBuildViewModel;
-import view.GameBuildView;
-import view.LoggedInView;
-import view.LoginView;
-import view.ViewManager;
+import interface_adapter.Setup.SetupViewModel;
+import view.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
@@ -42,6 +40,7 @@ public class Main {
         LoginViewModel loginViewModel = new LoginViewModel();
         LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
         GameBuildViewModel gameBuildViewModel = new GameBuildViewModel();
+        SetupViewModel setupViewModel = new SetupViewModel();
 
 
         FileDAO userDataAccessObject;
@@ -58,10 +57,12 @@ public class Main {
 
         LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel);
         views.add(loggedInView, loggedInView.viewName);
-        //TODO: logged in menu backend
 
-        GameBuildView gameBuildView = GameBuildUseCaseFactory.create(gameBuildViewModel);
+        GameBuildView gameBuildView = GameBuildUseCaseFactory.create(gameBuildViewModel, loggedInViewModel, viewManagerModel, setupViewModel);
         views.add(gameBuildView, gameBuildView.viewName);
+
+        GameView gameView = GameUseCaseFactory.create(setupViewModel, viewManagerModel);
+        views.add(gameView, gameView.viewName);
 
         viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();

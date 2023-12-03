@@ -20,6 +20,8 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
 
     private JButton backButton;
     private JButton playButton;
+
+
     private JCheckBox pvpCheckBox;
     private JCheckBox pvbCheckBox;
     private JSlider heightSlider;
@@ -33,8 +35,6 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         this.gameBuildViewModel = gameBuildViewModel;
 
         gameBuildViewModel.addPropertyChangeListener(this);
-
-
 
         // Top panel with Back and Play buttons
         backButton = new JButton("Back");
@@ -51,7 +51,8 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource() == pvpCheckBox) {
-                            pvbCheckBox.setSelected(!pvpCheckBox.isSelected());
+                            pvpCheckBox.setSelected(true);
+                            pvbCheckBox.setSelected(false);
                             GameBuildState currentState = gameBuildViewModel.getState();
                             currentState.setPvP(false);
                         }
@@ -63,8 +64,10 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (e.getSource() == pvpCheckBox) {
-                            pvbCheckBox.setSelected(!pvbCheckBox.isSelected());
+                        if (e.getSource() == pvbCheckBox) {
+                            // select the pvb checkbox, then unselect the pvp checkbox
+                            pvbCheckBox.setSelected(true);
+                            pvpCheckBox.setSelected(false);
                             GameBuildState currentState = gameBuildViewModel.getState();
                             currentState.setPvP(true);
                         }
@@ -76,6 +79,7 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         checkboxPanel.add(pvbCheckBox);
 
         // Panel for sliders
+
         JPanel slidersPanel = new JPanel(new GridLayout(4, 2, 5, 5));
         heightSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_HEIGHT, gameBuildViewModel.MAX_HEIGHT, gameBuildViewModel.DEF_HEIGHT);
         heightSlider.addChangeListener(
@@ -87,6 +91,12 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                     }
                 }
         );
+        // add labels at two ends of the slider, along with showing the current value of the slider
+        heightSlider.setMajorTickSpacing(1);
+        heightSlider.setPaintTicks(true);
+        heightSlider.setPaintLabels(true);
+        heightSlider.setLabelTable(heightSlider.createStandardLabels(1));
+
         bofDiffSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_BOT_DIFF, gameBuildViewModel.MAX_BOT_DIFF, gameBuildViewModel.DEF_BOT_DIFF);
         bofDiffSlider.addChangeListener(
                 new ChangeListener() {
@@ -97,6 +107,10 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                     }
                 }
         );
+        bofDiffSlider.setMajorTickSpacing(1);
+        bofDiffSlider.setPaintTicks(true);
+        bofDiffSlider.setPaintLabels(true);
+        bofDiffSlider.setLabelTable(bofDiffSlider.createStandardLabels(1));
         widthSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_WIDTH, gameBuildViewModel.MAX_WIDTH, gameBuildViewModel.DEF_WIDTH);
         widthSlider.addChangeListener(
                 new ChangeListener() {
