@@ -10,7 +10,7 @@ public class Game {
     public static List<Integer> moves = new ArrayList<>();
     public static Board reconstruct(Board board, List<Integer> moves) {
         char currentPlayer = 'X';
-        Board newBoard = new Board(board.getHeight(), board.getLength(), board.getPieces());
+        Board newBoard = new Board(board.getHeight(), board.getWidth(), board.getWinCondition());
         moves.remove(moves.size() - 1);
         for (int move : moves) {
             if (newBoard.makeMove(move, currentPlayer)) {

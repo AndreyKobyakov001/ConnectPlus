@@ -4,19 +4,20 @@ import java.util.*;
 
 public class Board {
     private char[][] board;
-    private int length;
+    private int width;
     private int height;
-    private int piecesToConnect;
+    private int winCondition;
 
 //BOT - UNDER CONSTRUCTION
 
-    public int getLength() {
-        return length;
+    public int getWidth() {
+        return width;
     }
     public int getHeight() {
         return height;
-    }public int getPieces() {
-        return piecesToConnect;
+    }
+    public int getWinCondition() {
+        return winCondition;
     }
 
 
@@ -32,9 +33,9 @@ public class Board {
 
         // Check horizontal connections
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j <= length - piecesToConnect; j++) {
+            for (int j = 0; j <= width - winCondition; j++) {
                 int count = 0;
-                for (int k = 0; k < piecesToConnect; k++) {
+                for (int k = 0; k < winCondition; k++) {
                     if (board[i][j + k] == playerSymbol) {
                         count++;
                     }
@@ -44,10 +45,10 @@ public class Board {
         }
 
         // Check vertical connections
-        for (int i = 0; i <= height - piecesToConnect; i++) {
-            for (int j = 0; j < length; j++) {
+        for (int i = 0; i <= height - winCondition; i++) {
+            for (int j = 0; j < width; j++) {
                 int count = 0;
-                for (int k = 0; k < piecesToConnect; k++) {
+                for (int k = 0; k < winCondition; k++) {
                     if (board[i + k][j] == playerSymbol) {
                         count++;
                     }
@@ -57,10 +58,10 @@ public class Board {
         }
 
         // Check diagonal (positive slope) connections
-        for (int i = 0; i <= height - piecesToConnect; i++) {
-            for (int j = 0; j <= length - piecesToConnect; j++) {
+        for (int i = 0; i <= height - winCondition; i++) {
+            for (int j = 0; j <= width - winCondition; j++) {
                 int count = 0;
-                for (int k = 0; k < piecesToConnect; k++) {
+                for (int k = 0; k < winCondition; k++) {
                     if (board[i + k][j + k] == playerSymbol) {
                         count++;
                     }
@@ -70,10 +71,10 @@ public class Board {
         }
 
         // Check diagonal (negative slope) connections
-        for (int i = piecesToConnect - 1; i < height; i++) {
-            for (int j = 0; j <= length - piecesToConnect; j++) {
+        for (int i = winCondition - 1; i < height; i++) {
+            for (int j = 0; j <= width - winCondition; j++) {
                 int count = 0;
-                for (int k = 0; k < piecesToConnect; k++) {
+                for (int k = 0; k < winCondition; k++) {
                     if (board[i - k][j + k] == playerSymbol) {
                         count++;
                     }
@@ -85,10 +86,10 @@ public class Board {
         return score;
     }
 
-    List<Integer> generateLegalMoves() {
+    public List<Integer> generateLegalMoves() {
         List<Integer> legalMoves = new ArrayList<>();
 
-        for (int column = 0; column < length; column++) {
+        for (int column = 0; column < width; column++) {
             if (findEmptyRow(column) != -1) {
                 legalMoves.add(column);
             }
@@ -104,30 +105,31 @@ public class Board {
 
 
     public Board(int length, int height, int piecesToConnect) {
-        if (length < 2 || length > 10 || height < 2 || height > 10 || piecesToConnect < 2 || piecesToConnect > 9) {
-            throw new IllegalArgumentException("Invalid board dimensions or pieces to connect.");
-        } //TODO: throw this in the controller
 
-        this.length = length;
+        this.width = length;
         this.height = height;
-        this.piecesToConnect = piecesToConnect;
+        this.winCondition = piecesToConnect;
 
 
         initializeBoard();
     }
 
     private void initializeBoard() {
-        board = new char[height][length];
+        board = new char[height][width];
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j < length; j++) {
+            for (int j = 0; j < width; j++) {
                 board[i][j] = '?'; // Initialize the board with '?' for empty squares
             }
         }
     }
 
+    public BoardState getState() {
+        return new BoardState(board);
+    }
+
     public void displayBoard() {
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j < length; j++) {
+            for (int j = 0; j < width; j++) {
                 System.out.print(board[i][j] + " ");
             }
             System.out.println();
@@ -135,7 +137,7 @@ public class Board {
     }
 
     public boolean makeMove(int column, char playerSymbol) {
-        if (column < 0 || column >= length) {
+        if (column < 0 || column >= width) {
             return false; // Invalid column
         }
 
@@ -169,11 +171,11 @@ public class Board {
     }
 
     public boolean isFull() {
-        int totalMoves = length * height;
+        int totalMoves = width * height;
         int currentMoves = 0;
 
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j < length; j++) {
+            for (int j = 0; j < width; j++) {
                 if (board[i][j] != '?') {
                     currentMoves++;
                 }
@@ -187,5 +189,19 @@ public class Board {
         return board;
     }
 
+    public void setBoard(char[][] board) {
+        this.board = board;
+    }
+    public boolean isValidMove(int column) {
+        return findEmptyRow(column) != -1;
+    }
+
+    public char getCell(int row, int col) {
+        return board[row][col];
+    }
+
+    public void setCell(int row, int col, char symbol) {
+        board[row][col] = symbol;
+    }
 }
 

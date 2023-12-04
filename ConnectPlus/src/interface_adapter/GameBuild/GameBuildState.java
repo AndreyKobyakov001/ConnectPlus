@@ -8,6 +8,7 @@ public class GameBuildState {
     private int width;
     private int winCondition;
     private int botDiff;
+    private boolean startGame = false;
 
     public GameBuildState(GameBuildState copy) {
         gameBuildError = copy.gameBuildError;
@@ -16,8 +17,15 @@ public class GameBuildState {
         width = copy.width;
         winCondition = copy.winCondition;
         botDiff = copy.botDiff;
+        startGame = copy.startGame;
+    }
+    public void setStartGame(boolean startGame) {
+        this.startGame = startGame;
     }
 
+    public boolean getStartGame() {
+        return startGame;
+    }
     // Because of the previous copy constructor, the default constructor must be explicit.
     public GameBuildState() {}
 

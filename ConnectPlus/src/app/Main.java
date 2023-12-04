@@ -3,10 +3,8 @@ package app;
 import DataAccsessinterfaces.FileDAO;
 import DataAccsessinterfaces.UserFactory;
 import interface_adapter.GameBuild.GameBuildViewModel;
-import view.GameBuildView;
-import view.LoggedInView;
-import view.LoginView;
-import view.ViewManager;
+import interface_adapter.Setup.SetupViewModel;
+import view.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginViewModel;
@@ -16,6 +14,8 @@ import java.awt.*;
 import java.io.IOException;
 
 public class Main {
+
+    private static JPanel views;
 
     public static void main(String[] args) {
         // Build the main program window, the main panel containing the
@@ -28,7 +28,7 @@ public class Main {
         CardLayout cardLayout = new CardLayout();
 
         // The various View objects. Only one view is visible at a time.
-        JPanel views = new JPanel(cardLayout);
+        views = new JPanel(cardLayout);
         application.add(views);
 
         // This keeps track of and manages which view is currently showing.
@@ -42,6 +42,7 @@ public class Main {
         LoginViewModel loginViewModel = new LoginViewModel();
         LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
         GameBuildViewModel gameBuildViewModel = new GameBuildViewModel();
+        SetupViewModel setupViewModel = new SetupViewModel();
 
 
         FileDAO userDataAccessObject;
@@ -58,10 +59,13 @@ public class Main {
 
         LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel);
         views.add(loggedInView, loggedInView.viewName);
-        //TODO: logged in menu backend
 
-        GameBuildView gameBuildView = GameBuildUseCaseFactory.create(gameBuildViewModel);
+        JPanel[] gameViews = GameBuildUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel, setupViewModel);
+        GameBuildView gameBuildView = (GameBuildView) gameViews[0];
         views.add(gameBuildView, gameBuildView.viewName);
+
+        GameView gameView = (GameView) gameViews[1];
+        views.add(gameView, gameView.viewName);
 
         viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();
@@ -69,4 +73,6 @@ public class Main {
         application.pack();
         application.setVisible(true);
     }
+
+
 }

@@ -19,6 +19,7 @@ public class GameBuildOutputData {
         this.height = height;
         this.width = width;
         this.winCondition = winCondition;
+        this.botDifficulty = -1;
     }
 
     public int getHeight() {
