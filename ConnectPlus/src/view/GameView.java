@@ -55,12 +55,9 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
             JButton button = new JButton(Integer.toString(i + 1));
             button.setActionCommand(Integer.toString(i)); // Set the column number as the action command
             button.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (e.getSource() == button) {
-                                handleColumnClick(Integer.parseInt(button.getActionCommand()));
-                            }
+                    e -> {
+                        if (e.getSource() == button) {
+                            handleColumnClick(Integer.parseInt(button.getActionCommand()));
                         }
                     }
             );
@@ -197,19 +194,20 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource() == forfeitButton) {
-                            //TODO: forfeit
+                            int resigner = 1; //TODO: test if it is this way; might have to change around the 1 and 0.
+                            if(player1Turn) {
+                                resigner = 0;
+                            }
+                            setupController.forfeitGame(resigner);
                         }
                     }
                 });
 
         undoButton = new JButton(setupViewModel.UNDO_LABEL);
         undoButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (e.getSource() == undoButton) {
-                            setupController.undoMove();
-                        }
+                e -> {
+                    if (e.getSource() == undoButton) {
+                        setupController.undoMove();
                     }
                 });
         JPanel menuPanel = new JPanel();

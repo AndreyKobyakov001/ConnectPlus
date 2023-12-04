@@ -43,5 +43,7 @@
             return loggedInUser;
         }
 
-
+        public static void setLoggedInUser(String loggedInUser) {
+//            this.loggedInUser = loggedInUser;
+        }
     }

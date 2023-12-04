@@ -74,13 +74,15 @@ public class SetUpInteractor implements SetupInputBoundary {
             char[][] prevState = previousStates.peek(); // Get the previous state
             board.setBoard(prevState); // Revert to the previous state
             isPlayer1Turn = !isPlayer1Turn; // Switch turn
-            updatePresenterWithBoardState();
+            updatePresenterWithBoardState(); //TODO: make sure this works.
         }
     }
 
     @Override
-    public void forfeitGame() {
-        return;
+    public void forfeitGame(int i) {
+        SetupOutputData outputData = createOutputData();
+        outputData.setisWon(i);
+        presenter.endGame(outputData);
     }
 
     private void endGame() {

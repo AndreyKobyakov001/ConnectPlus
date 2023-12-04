@@ -22,8 +22,8 @@ public class SetupController {
             this.setupUseCaseInteractor.undoMove();
         }
 
-        public void forfeitGame() {
-            setupUseCaseInteractor.forfeitGame();
+        public void forfeitGame(int i) {
+            setupUseCaseInteractor.forfeitGame(i);
         }
 
 

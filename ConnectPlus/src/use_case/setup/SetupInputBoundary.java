@@ -7,5 +7,5 @@ public interface SetupInputBoundary {
 
     public void makeMove(int column, String playerName);
     public void undoMove();
-    public void forfeitGame();
+    public void forfeitGame(int i);
 }
