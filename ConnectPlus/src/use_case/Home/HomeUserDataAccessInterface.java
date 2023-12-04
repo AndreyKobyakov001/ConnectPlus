@@ -1,2 +1,4 @@
-package use_case.Home;public interface HomeUserDataAccessInterface {
+package use_case.Home;
+
+public interface HomeUserDataAccessInterface {
 }
