@@ -49,7 +49,7 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
     }
 
 
-    private void initializeButtons() {
+    private JPanel initializeButtons() {
         JPanel buttonPanel = new JPanel(new GridLayout(1, cols));
         for (int i = 0; i < cols; i++) {
             JButton button = new JButton(Integer.toString(i + 1));
@@ -64,7 +64,7 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
             columnButtons[i] = button;
             buttonPanel.add(button);
         }
-        add(buttonPanel, BorderLayout.SOUTH);
+        return buttonPanel;
     }
 
     private void initializeGrid(JPanel gridPanel) {
@@ -140,11 +140,11 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
         turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
-    private void addBottomUserLabels() {
+    private JPanel addBottomUserLabels() {
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(player1Label, BorderLayout.WEST);
         bottomPanel.add(player2Label, BorderLayout.EAST);
-        add(bottomPanel, BorderLayout.SOUTH);
+        return bottomPanel;
     }
 
     private void addTopTurnLabel() {
@@ -183,6 +183,11 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
         JPanel gridPanel = new JPanel(new GridLayout(rows, cols));
         grid = new JLabel[rows][cols];
         columnButtons = new JButton[cols];
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS)); // or any other layout manager
+        southPanel.add(initializeButtons());
+//        southPanel.add(addBottomUserLabels());
+        add(southPanel, BorderLayout.SOUTH);
         initializeGrid(gridPanel);
         initializeButtons();
         add(gridPanel, BorderLayout.CENTER);
@@ -194,9 +199,9 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (e.getSource() == forfeitButton) {
-                            int resigner = 1; //TODO: test if it is this way; might have to change around the 1 and 0.
+                            int resigner = 2; //TODO: test if it is this way; might have to change around the 1 and 0.
                             if(player1Turn) {
-                                resigner = 0;
+                                resigner = 1;
                             }
                             setupController.forfeitGame(resigner);
                         }
@@ -219,8 +224,6 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
         // Initialize user labels and turn label
         initializeUserLabels(player1Turn);
 
-        // Add user labels at the bottom of the grid
-        addBottomUserLabels();
 
         // Add turn label at the top of the grid
         addTopTurnLabel();
