@@ -3,6 +3,7 @@ package app;
 import interface_adapter.GameBuild.GameBuildController;
 import interface_adapter.GameBuild.GameBuildPresenter;
 import interface_adapter.GameBuild.GameBuildViewModel;
+import interface_adapter.Home.EndViewModel;
 import interface_adapter.Setup.SetupController;
 import interface_adapter.Setup.SetupPresenter;
 import interface_adapter.Setup.SetupViewModel;
@@ -24,10 +25,10 @@ public class GameBuildUseCaseFactory {
 
     private GameBuildUseCaseFactory() {}
 
-    public static JPanel[] create(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel, GameBuildViewModel gameBuildViewModel, SetupViewModel setupViewModel) {
+    public static JPanel[] create(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel, GameBuildViewModel gameBuildViewModel, SetupViewModel setupViewModel, EndViewModel endViewModel) {
         try {
             GameBuildController gameBuildController = createGameBuildUseCase(gameBuildViewModel, loggedInViewModel, viewManagerModel, setupViewModel);
-            SetupController setupController = createSetupUseCase(setupViewModel, viewManagerModel);
+            SetupController setupController = createSetupUseCase(setupViewModel, viewManagerModel, endViewModel);
             GameBuildView gameBuildView = new GameBuildView(gameBuildController, gameBuildViewModel, setupController);
             GameView gameView = new GameView(setupController, setupViewModel);
             return new JPanel[]{gameBuildView, gameView};
@@ -45,8 +46,8 @@ public class GameBuildUseCaseFactory {
     }
 
 
-    public static SetupController createSetupUseCase(SetupViewModel setupViewModel, ViewManagerModel viewManagerModel) {
-        SetupOutputBoundary setupOutputBoundary = new SetupPresenter(viewManagerModel, setupViewModel);
+    public static SetupController createSetupUseCase(SetupViewModel setupViewModel, ViewManagerModel viewManagerModel, EndViewModel endViewModel) {
+        SetupOutputBoundary setupOutputBoundary = new SetupPresenter(viewManagerModel, setupViewModel, endViewModel);
         SetupInputBoundary setupInteractor = new SetUpInteractor(setupOutputBoundary);
         return new SetupController(setupInteractor);
     }

@@ -9,11 +9,8 @@ public class SetupViewModel extends ViewModel {
 
     public String TITLE_LABEL = "Setup View";
 
-    public final String FORFEIT_LABEL = "I'm weak";
-    public final String UNDO_LABEL = "Cheat";
-    public final String TURN_LABEL = "Turn";
-
-
+    public final String FORFEIT_LABEL = "forfeit";
+    public final String UNDO_LABEL = "undo";
 
 
     private SetupState state = new SetupState();

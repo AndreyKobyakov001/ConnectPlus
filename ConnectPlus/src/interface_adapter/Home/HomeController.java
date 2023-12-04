@@ -13,5 +13,9 @@ public class HomeController {
         public void play() {
             homeUseCaseInteractor.play();
         }
+
+        public void restart() {
+            homeUseCaseInteractor.restart();
+        }
     }
 

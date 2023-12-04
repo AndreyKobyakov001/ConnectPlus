@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 
 
 public class GameView extends JPanel implements ActionListener, PropertyChangeListener {
+    //TODO: set default size
 
     public final String viewName = "setup view";
     private JLabel[][] grid;
@@ -44,7 +45,7 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
     private final SetupViewModel setupViewModel;
 
     public GameView(SetupController setupController, SetupViewModel setupViewModel) {
-
+        this.setPreferredSize(new Dimension(1920, 1080));
         this.setupController = setupController;
         this.setupViewModel = setupViewModel;
         this.setupViewModel.addPropertyChangeListener(this);

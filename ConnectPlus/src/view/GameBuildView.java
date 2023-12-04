@@ -36,6 +36,7 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
 
 
     public GameBuildView(GameBuildController gameBuildController, GameBuildViewModel gameBuildViewModel, SetupController setupController) {
+        this.setPreferredSize(new Dimension(1920, 1080));
         this.gameBuildController = gameBuildController;
         this.gameBuildViewModel = gameBuildViewModel;
         this.setupController = setupController;

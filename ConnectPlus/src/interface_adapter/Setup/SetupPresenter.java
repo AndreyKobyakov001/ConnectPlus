@@ -1,5 +1,7 @@
 package interface_adapter.Setup;
 
+import interface_adapter.Home.EndViewModel;
+import interface_adapter.Home.EndViewState;
 import interface_adapter.ViewManagerModel;
 import use_case.setup.SetupOutputBoundary;
 import use_case.setup.SetupOutputData;
@@ -8,10 +10,12 @@ public class SetupPresenter implements SetupOutputBoundary {
 
     private ViewManagerModel viewManagerModel;
     private final SetupViewModel setupViewModel;
+    private final EndViewModel endViewModel;
 
-    public SetupPresenter(ViewManagerModel viewManagerModel, SetupViewModel setupViewModel) {
+    public SetupPresenter(ViewManagerModel viewManagerModel, SetupViewModel setupViewModel, EndViewModel endViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.setupViewModel = setupViewModel;
+        this.endViewModel = endViewModel;
     }
     @Override
     public void updateBoard(SetupOutputData outputData) {
@@ -43,12 +47,14 @@ public class SetupPresenter implements SetupOutputBoundary {
         SetupState setupState = setupViewModel.getState();
         setupState.setStartGame(false);
         setupState.setResult(outputData.getIsWon());
-//        EndState endState = endViewModel.getState();
-//        endState.setIsWon(outputData.getIsWon());
-//        endViewModel.firePropertyChanged();
-        setupViewModel.firePropertyChanged();
-        viewManagerModel.setActiveView("end view");
-        viewManagerModel.firePropertyChanged();
+        this.setupViewModel.firePropertyChanged();
+        EndViewState endState = endViewModel.getState();
+        endState.setIsWon(outputData.getIsWon());
+        endState.setELODelta(outputData.getELODelta());
+        this.endViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setActiveView("end view");
+        this.viewManagerModel.firePropertyChanged();
     }
 
     @Override

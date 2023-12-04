@@ -93,7 +93,14 @@ public class SetUpInteractor implements SetupInputBoundary {
         int winner = determineWinner();
         SetupOutputData outputData = createOutputData();
         outputData.setisWon(winner);
+        outputData.setELODelta(getELODelta(winner));
         presenter.endGame(outputData);
+    }
+
+    private int getELODelta(int winner) {
+        if (this.player2 instanceof Bot) {
+            return this.botDiff * 19;
+        } return 0;
     }
 
 
@@ -130,61 +137,73 @@ public class SetUpInteractor implements SetupInputBoundary {
         return setupOutputData;
     }
 
-    private int minimax(int depth, boolean isMaximizingPlayer) {
-        int score = evaluateBoard(); // Method to evaluate the score of the current board state
+    private int minimax(int depth, boolean isMaximizingPlayer, int maxDepth) {
+        if (depth == maxDepth) {
+            return evaluateBoard(maxDepth);
+        }
+        int score = evaluateBoard(maxDepth); // Method to evaluate the score of the current board state
 
         // If Maximizer has won the game return evaluated score
-        if (score == 10) return score - depth;
+        if (determineWinner() == 2) return score - depth;
 
         // If Minimizer has won the game return evaluated score
-        if (score == -10) return score + depth;
+        if (determineWinner() == 1) return score + depth;
 
         // If there are no more moves and no winner then it is a tie
-        if (board.isFull()) return 0;
+        if (determineWinner() == 0) return 0;
 
         int best;
 
         if (isMaximizingPlayer) {
             best = Integer.MIN_VALUE;
 
-            // Traverse all cells
-            for (int i = 0; i < board.getHeight(); i++) {
-                for (int j = 0; j < board.getWidth(); j++) {
-                    // Check if cell is empty
-                    if (board.getCell(i, j) == ' ') {
-                        // Make the move
-                        board.setCell(i, j, player1.getSymbol());
-
-                        // Call minimax recursively and choose the maximum value
-                        best = Math.max(best, minimax(depth + 1, !isMaximizingPlayer));
-
-                        // Undo the move
-                        board.setCell(i, j, ' ');
+            // Traverse only columns
+            for (int j = 0; j < board.getWidth(); j++) {
+                // Check if the top cell of the column is empty (column is not full)
+                if (board.getCell(0, j) == '?') {
+                    // Find the lowest empty cell in this column
+                    int i = board.getHeight() - 1;
+                    while (i > 0 && board.getCell(i, j) != '?') {
+                        i--;
                     }
+
+                    // Make the move
+                    board.setCell(i, j, player1.getSymbol());
+
+                    // Call minimax recursively and choose the maximum value
+                    best = Math.max(best, minimax(depth + 1, false, maxDepth));
+
+                    // Undo the move
+                    board.setCell(i, j, '?');
                 }
             }
         } else {
             best = Integer.MAX_VALUE;
 
-            // Traverse all cells
-            for (int i = 0; i < board.getHeight(); i++) {
-                for (int j = 0; j < board.getWidth(); j++) {
-                    // Check if cell is empty
-                    if (board.getCell(i, j) == ' ') {
-                        // Make the move
-                        board.setCell(i, j, player2.getSymbol());
-
-                        // Call minimax recursively and choose the minimum value
-                        best = Math.min(best, minimax(depth + 1, !isMaximizingPlayer));
-
-                        // Undo the move
-                        board.setCell(i, j, ' ');
+            // Traverse only columns
+            for (int j = 0; j < board.getWidth(); j++) {
+                // Check if the top cell of the column is empty (column is not full)
+                if (board.getCell(0, j) == '?') {
+                    // Find the lowest empty cell in this column
+                    int i = board.getHeight() - 1;
+                    while (i > 0 && board.getCell(i, j) != '?') {
+                        i--;
                     }
+
+                    // Make the move
+                    board.setCell(i, j, player2.getSymbol());
+
+                    // Call minimax recursively and choose the minimum value
+                    best = Math.min(best, minimax(depth + 1, true, maxDepth));
+
+                    // Undo the move
+                    board.setCell(i, j, '?');
                 }
             }
         }
         return best;
     }
+
 
     private void makeBotMoveRandomly(){
         Random random = new Random();
@@ -231,7 +250,7 @@ public class SetUpInteractor implements SetupInputBoundary {
                 board.setCell(i, j, player2.getSymbol());
 
                 // Compute evaluation function for this move
-                int moveVal = minimax(board.getWinCondition(), false);
+                int moveVal = minimax(1, false, botDiff);
 
                 // Undo the move
                 board.setCell(i, j, '?');
@@ -249,8 +268,143 @@ public class SetUpInteractor implements SetupInputBoundary {
         }
     }
 
+    private int evaluateBoard(int difficulty) {
+        // Hard difficulty: More sophisticated evaluation
+        if (difficulty >= 5) {
+            return evaluateBoardHard();
+        }
+        // Easy difficulty: Simple evaluation
+        else {
+            return evaluateBoardEasy();
+        }
+    }
 
-    private int evaluateBoard() {
+    private int evaluateBoardHard() {
+        int winCondition = board.getWinCondition();
+        int score = 0;
+
+        // Check for immediate wins or losses
+        int winScore = checkForImmediateWins(player1.getSymbol(), player2.getSymbol(), winCondition);
+        if (winScore == Integer.MAX_VALUE || winScore == Integer.MIN_VALUE) return winScore; // Return -10 or 10 if a win or loss is detected
+
+        // Evaluate potential wins and threats
+        score += evaluatePotentialWins(player1.getSymbol(), player2.getSymbol(), winCondition);
+        score -= evaluatePotentialWins(player2.getSymbol(), player1.getSymbol(), winCondition);
+
+        // Normalize and return the score
+        return score;
+    }
+    private int checkForImmediateWins(char playerSymbol, char opponentSymbol, int winCondition) {
+        if (isWinningCondition(playerSymbol, winCondition)) return Integer.MIN_VALUE;
+        if (isWinningCondition(opponentSymbol, winCondition)) return Integer.MAX_VALUE;
+        return 0;
+    }
+    private boolean isWinningCondition(char playerSymbol, int winCondition) {
+        // Check all rows
+        for (int row = 0; row < board.getHeight(); row++) {
+            for (int col = 0; col <= board.getWidth() - winCondition; col++) {
+                if (checkLine(playerSymbol, row, col, 0, 1, winCondition)) {
+                    return true;
+                }
+            }
+        }
+
+        // Check all columns
+        for (int col = 0; col < board.getWidth(); col++) {
+            for (int row = 0; row <= board.getHeight() - winCondition; row++) {
+                if (checkLine(playerSymbol, row, col, 1, 0, winCondition)) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonal (top-left to bottom-right)
+        for (int row = 0; row <= board.getHeight() - winCondition; row++) {
+            for (int col = 0; col <= board.getWidth() - winCondition; col++) {
+                if (checkLine(playerSymbol, row, col, 1, 1, winCondition)) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonal (bottom-left to top-right)
+        for (int row = winCondition - 1; row < board.getHeight(); row++) {
+            for (int col = 0; col <= board.getWidth() - winCondition; col++) {
+                if (checkLine(playerSymbol, row, col, -1, 1, winCondition)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkLine(char playerSymbol, int startRow, int startCol, int dRow, int dCol, int length) {
+        for (int k = 0; k < length; k++) {
+            if (board.getCell(startRow + k * dRow, startCol + k * dCol) != playerSymbol) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    private int evaluatePotentialWins(char playerSymbol, char opponentSymbol, int winCondition) {
+        int score = 0;
+
+        // Evaluate rows, columns, and diagonals for potential wins
+        score += evaluateLinesForPotentialWins(playerSymbol, opponentSymbol, winCondition, 0, 1); // Horizontal
+        score += evaluateLinesForPotentialWins(playerSymbol, opponentSymbol, winCondition, 1, 0); // Vertical
+        score += evaluateLinesForPotentialWins(playerSymbol, opponentSymbol, winCondition, 1, 1); // Diagonal (positive)
+        score += evaluateLinesForPotentialWins(playerSymbol, opponentSymbol, winCondition, 1, -1); // Diagonal (negative)
+
+        return score;
+    }
+
+    private int evaluateLinesForPotentialWins(char playerSymbol, char opponentSymbol, int winCondition, int dRow, int dCol) {
+        int lineScore = 0;
+
+        for (int row = 0; row < board.getHeight(); row++) {
+            for (int col = 0; col < board.getWidth(); col++) {
+                // Check if a line can be formed starting from this cell
+                if (canFormLine(row, col, dRow, dCol, winCondition)) {
+                    int playerCount = 0;
+                    int emptyCount = 0;
+
+                    for (int k = 0; k < winCondition; k++) {
+                        char cellSymbol = board.getCell(row + k * dRow, col + k * dCol);
+                        if (cellSymbol == playerSymbol) {
+                            playerCount++;
+                        } else if (cellSymbol == '?') {
+                            emptyCount++;
+                        }
+                    }
+
+                    // Evaluate line only if it is not blocked by the opponent
+                    if (playerCount + emptyCount == winCondition) {
+                        lineScore += scorePotentialLine(playerCount, winCondition);
+                    }
+                }
+            }
+        }
+
+        return lineScore;
+    }
+
+    private int scorePotentialLine(int playerCount, int winCondition) {
+        // Heuristic scoring for potential lines
+        if (playerCount == winCondition - 1) {
+            return 5; // One move away from winning
+        } else if (playerCount > 0) {
+            return playerCount; // Score based on the number of player's symbols in the line
+        }
+        return 0;
+    }
+
+
+
+
+    private int evaluateBoardEasy() {
         int score = 0;
 
         // Score for horizontal, vertical, and both diagonal directions

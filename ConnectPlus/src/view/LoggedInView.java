@@ -30,6 +30,7 @@ public class LoggedInView extends JPanel implements ActionListener, PropertyChan
      * A window with a title and a JButton.
      */
     public LoggedInView(LoggedInViewModel loggedInViewModel, LoggedInController loggedInController) {
+        this.setPreferredSize(new Dimension(1920, 1080));
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
         this.loggedInController = loggedInController;

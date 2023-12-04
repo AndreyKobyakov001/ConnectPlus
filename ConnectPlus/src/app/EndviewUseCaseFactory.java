@@ -4,6 +4,7 @@ import interface_adapter.GameBuild.GameBuildViewModel;
 import interface_adapter.Home.EndViewModel;
 import interface_adapter.Home.HomeController;
 import interface_adapter.Home.HomePresenter;
+import interface_adapter.Setup.SetupViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInPresenter;
@@ -23,9 +24,10 @@ public class EndviewUseCaseFactory {
 
         public static EndView create(ViewManagerModel viewManagerModel,
                                           EndViewModel endViewModel,
-                                          GameBuildViewModel gameBuildViewModel) {
+                                          LoggedInViewModel loggedInViewModel,
+                                          SetupViewModel setupViewModel) {
             try{
-                HomeController homeController = createhomeUseCase(viewManagerModel, gameBuildViewModel);
+                HomeController homeController = createhomeUseCase(viewManagerModel, loggedInViewModel, setupViewModel);
                 return new EndView(endViewModel, homeController);
 
             } catch (Exception e) {
@@ -34,8 +36,8 @@ public class EndviewUseCaseFactory {
         }
 
         private static HomeController createhomeUseCase(ViewManagerModel viewManagerModel,
-                                                                GameBuildViewModel gameBuildViewModel) {
-            HomeOutputBoundary homeOutputBoundary = new HomePresenter(viewManagerModel, gameBuildViewModel);
+                                                                LoggedInViewModel loggedInViewModel, SetupViewModel setupViewModel) {
+            HomeOutputBoundary homeOutputBoundary = new HomePresenter(viewManagerModel, loggedInViewModel, setupViewModel);
             HomeInputBoundary homeInteractor = new HomeInteractor(homeOutputBoundary);
             return new HomeController(homeInteractor);
         }

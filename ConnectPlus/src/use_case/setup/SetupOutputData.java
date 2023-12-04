@@ -13,6 +13,8 @@ public class SetupOutputData {
     private char[][] boardState;
     private int isWon;
 
+    private int ELODelta;
+
     private boolean isPlayer1Turn = true; // true if it is the player's turn
 
     public SetupOutputData(int height, int width,
@@ -23,6 +25,14 @@ public class SetupOutputData {
         this.botDifficulty = botDifficulty;
         this.player1 = player1;
         this.player2 = player2;
+    }
+
+    public void setELODelta(int ELODelta) {
+        this.ELODelta = ELODelta;
+    }
+
+    public int getELODelta() {
+        return ELODelta;
     }
 
     public void setPlayer1Turn(boolean isPlayer1Turn) {

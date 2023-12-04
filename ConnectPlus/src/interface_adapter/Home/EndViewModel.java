@@ -7,7 +7,12 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class EndViewModel extends ViewModel {
+    public String TITLE_LABEL = "end view";
 
+    public final String RESTART_SAME_LABEL = "restart (same settings)";
+    public final String HOME_LABEL = "home";
+
+    public final String ELO_LABEL = "Your ELO increase is: ";
 
     private EndViewState state = new EndViewState();
 
