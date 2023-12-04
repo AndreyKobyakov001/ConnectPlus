@@ -15,6 +15,8 @@ import java.io.IOException;
 
 public class Main {
 
+    private static JPanel views;
+
     public static void main(String[] args) {
         // Build the main program window, the main panel containing the
         // various cards, and the layout, and stitch them together.
@@ -26,7 +28,7 @@ public class Main {
         CardLayout cardLayout = new CardLayout();
 
         // The various View objects. Only one view is visible at a time.
-        JPanel views = new JPanel(cardLayout);
+        views = new JPanel(cardLayout);
         application.add(views);
 
         // This keeps track of and manages which view is currently showing.
@@ -58,10 +60,11 @@ public class Main {
         LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel);
         views.add(loggedInView, loggedInView.viewName);
 
-        GameBuildView gameBuildView = GameBuildUseCaseFactory.create(gameBuildViewModel, loggedInViewModel, viewManagerModel, setupViewModel);
+        JPanel[] gameViews = GameBuildUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel, setupViewModel);
+        GameBuildView gameBuildView = (GameBuildView) gameViews[0];
         views.add(gameBuildView, gameBuildView.viewName);
 
-        GameView gameView = GameUseCaseFactory.create(setupViewModel, viewManagerModel);
+        GameView gameView = (GameView) gameViews[1];
         views.add(gameView, gameView.viewName);
 
         viewManagerModel.setActiveView(loginView.viewName);
@@ -70,4 +73,6 @@ public class Main {
         application.pack();
         application.setVisible(true);
     }
+
+
 }

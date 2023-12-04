@@ -1,7 +1,10 @@
 package view;
 
 import interface_adapter.GameBuild.*;
+import interface_adapter.Setup.SetupController;
 import use_case.GameBuild.GameBuildInputData;
+import use_case.GameBuild.GameBuildOutputData;
+import use_case.setup.SetUpInteractor;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -11,12 +14,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Hashtable;
 
 public class GameBuildView extends JPanel implements ActionListener, PropertyChangeListener, ChangeListener {
 
     private final GameBuildController gameBuildController;
     private final GameBuildViewModel gameBuildViewModel;
     public final String viewName = "game build";
+    private final SetupController setupController;
 
     private JButton backButton;
     private JButton playButton;
@@ -30,9 +35,10 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
     private JSlider winCondSlider;
 
 
-    public GameBuildView(GameBuildController gameBuildController, GameBuildViewModel gameBuildViewModel) {
+    public GameBuildView(GameBuildController gameBuildController, GameBuildViewModel gameBuildViewModel, SetupController setupController) {
         this.gameBuildController = gameBuildController;
         this.gameBuildViewModel = gameBuildViewModel;
+        this.setupController = setupController;
 
         gameBuildViewModel.addPropertyChangeListener(this);
 
@@ -54,7 +60,8 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                             pvpCheckBox.setSelected(true);
                             pvbCheckBox.setSelected(false);
                             GameBuildState currentState = gameBuildViewModel.getState();
-                            currentState.setPvP(false);
+                            currentState.setPvP(true);
+
                         }
                     }
                 }
@@ -69,7 +76,7 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                             pvbCheckBox.setSelected(true);
                             pvpCheckBox.setSelected(false);
                             GameBuildState currentState = gameBuildViewModel.getState();
-                            currentState.setPvP(true);
+                            currentState.setPvP(false);
                         }
                     }
                 }
@@ -96,6 +103,10 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         heightSlider.setPaintTicks(true);
         heightSlider.setPaintLabels(true);
         heightSlider.setLabelTable(heightSlider.createStandardLabels(1));
+        Hashtable<Integer, JLabel> labelTableHeight = new Hashtable<>();
+        labelTableHeight.put(gameBuildViewModel.MIN_HEIGHT, new JLabel("" + gameBuildViewModel.MIN_HEIGHT));
+        labelTableHeight.put(gameBuildViewModel.MAX_HEIGHT, new JLabel("" + gameBuildViewModel.MAX_HEIGHT));
+        heightSlider.setLabelTable(labelTableHeight);
 
         bofDiffSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_BOT_DIFF, gameBuildViewModel.MAX_BOT_DIFF, gameBuildViewModel.DEF_BOT_DIFF);
         bofDiffSlider.addChangeListener(
@@ -111,6 +122,11 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         bofDiffSlider.setPaintTicks(true);
         bofDiffSlider.setPaintLabels(true);
         bofDiffSlider.setLabelTable(bofDiffSlider.createStandardLabels(1));
+        Hashtable<Integer, JLabel> labelTableBotDiff = new Hashtable<>();
+        labelTableBotDiff.put(gameBuildViewModel.MIN_BOT_DIFF, new JLabel("" + gameBuildViewModel.MIN_BOT_DIFF));
+        labelTableBotDiff.put(gameBuildViewModel.MAX_BOT_DIFF, new JLabel("" + gameBuildViewModel.MAX_BOT_DIFF));
+        bofDiffSlider.setLabelTable(labelTableBotDiff);
+
         widthSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_WIDTH, gameBuildViewModel.MAX_WIDTH, gameBuildViewModel.DEF_WIDTH);
         widthSlider.addChangeListener(
                 new ChangeListener() {
@@ -121,6 +137,15 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                     }
                 }
         );
+        widthSlider.setMajorTickSpacing(1);
+        widthSlider.setPaintTicks(true);
+        widthSlider.setPaintLabels(true);
+        widthSlider.setLabelTable(widthSlider.createStandardLabels(1));
+        Hashtable<Integer, JLabel> labelTableWidth = new Hashtable<>();
+        labelTableWidth.put(gameBuildViewModel.MIN_WIDTH, new JLabel("" + gameBuildViewModel.MIN_WIDTH));
+        labelTableWidth.put(gameBuildViewModel.MAX_WIDTH, new JLabel("" + gameBuildViewModel.MAX_WIDTH));
+        widthSlider.setLabelTable(labelTableWidth);
+
         winCondSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_WIN_COND, gameBuildViewModel.MAX_WIN_COND, gameBuildViewModel.DEF_WIN_COND);
         winCondSlider.addChangeListener(
                 new ChangeListener() {
@@ -131,6 +156,21 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                     }
                 }
         );
+        winCondSlider.setMajorTickSpacing(1);
+        winCondSlider.setPaintTicks(true);
+        winCondSlider.setPaintLabels(true);
+        winCondSlider.setLabelTable(winCondSlider.createStandardLabels(1));
+        // Create a Hashtable for labels
+        Hashtable<Integer, JLabel> labelTableWinC = new Hashtable<>();
+
+        // Add a label for the minimum value
+        labelTableWinC.put(gameBuildViewModel.MIN_WIN_COND, new JLabel("" + gameBuildViewModel.MIN_WIN_COND));
+
+        // Add a label for the maximum value
+        labelTableWinC.put(gameBuildViewModel.MAX_WIN_COND, new JLabel("" + gameBuildViewModel.MAX_WIN_COND));
+
+        // Set the label table on the slider
+        winCondSlider.setLabelTable(labelTableWinC);
 
         // Add sliders to the sliders panel
         slidersPanel.add(new JLabel(gameBuildViewModel.BOT_DIFF_LABEL));
@@ -182,6 +222,12 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
                                     gameBuildViewModel.MAX_BOT_DIFF
                             );
                             gameBuildController.execute(inputData);
+                            if (currentState.getStartGame()){
+                                System.out.println("Start game");
+                                int botDiff = currentState.getIsPVP() ? -1 : currentState.getBotDiff();
+                                setupController.startGame(new GameBuildOutputData(currentState.getHeight(), currentState.getWidth(), currentState.getWinCondition(), botDiff));
+
+                            }
                         }
                     }
                 }

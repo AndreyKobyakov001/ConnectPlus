@@ -1,9 +1,9 @@
 package view;
 
-import interface_adapter.GameBuild.GameBuildState;
 import interface_adapter.Setup.SetupState;
 import interface_adapter.Setup.SetupViewModel;
 import interface_adapter.Setup.SetupController;
+import use_case.GameBuild.GameBuildOutputData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,65 +42,13 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
     private final SetupViewModel setupViewModel;
 
     public GameView(SetupController setupController, SetupViewModel setupViewModel) {
-        //Initialize initial state's variables
-        setupViewModel.addPropertyChangeListener(this);
+
         this.setupController = setupController;
         this.setupViewModel = setupViewModel;
-        SetupState currentState = setupViewModel.getState();
-        this.rows = currentState.getHeight() >0 ? currentState.getHeight(): 1;
-        this.cols = currentState.getWidth() >0 ? currentState.getWidth(): 1;
-        this.player1Turn = currentState.getIsPlayer1Turn();
-        this.player1Name = currentState.getPlayer1Name();
-        this.player2Name = currentState.getPlayer2Name();
-
-        // Initialize the grid and its respective grid buttons
-        setLayout(new BorderLayout());
-        JPanel gridPanel = new JPanel(new GridLayout(rows, cols));
-        grid = new JLabel[rows][cols];
-        columnButtons = new JButton[cols];
-        initializeGrid(gridPanel);
-        initializeButtons();
-        add(gridPanel, BorderLayout.CENTER);
-
-        // Initialize the menu buttons
-        forfeitButton = new JButton(setupViewModel.FORFEIT_LABEL);
-        forfeitButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (e.getSource() == forfeitButton) {
-                            //TODO: forfeit
-                        }
-                    }
-                });
-
-        undoButton = new JButton(setupViewModel.UNDO_LABEL);
-        undoButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (e.getSource() == undoButton) {
-                            setupController.undoMove();
-                        }
-                    }
-                });
-        JPanel menuPanel = new JPanel();
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        menuPanel.add(forfeitButton);
-        menuPanel.add(undoButton);
-        add(menuPanel, BorderLayout.EAST);
-
-        // Initialize user labels and turn label
-        initializeUserLabels(player1Turn);
-
-        // Add user labels at the bottom of the grid
-        addBottomUserLabels();
-
-        // Add turn label at the top of the grid
-        addTopTurnLabel();
-
-        //
+        this.setupViewModel.addPropertyChangeListener(this);
     }
+
+
     private void initializeButtons() {
         JPanel buttonPanel = new JPanel(new GridLayout(1, cols));
         for (int i = 0; i < cols; i++) {
@@ -160,7 +108,7 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
     }
 
     private void updateViewFromViewModel() {
-        // Example: Update the grid based on the current board state from the view model
+        // Update the grid based on the current board state from the view model
         SetupState state = setupViewModel.getState();
         char[][] boardState = state.getBoardState(); // Assuming getBoardState() is a method in the view model
         for (int row = 0; row < rows; row++) {
@@ -213,9 +161,70 @@ public class GameView extends JPanel implements ActionListener, PropertyChangeLi
     }
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+
         SetupState state = (SetupState) propertyChangeEvent.getNewValue();
         if(state.getIllegalMoveError() != null) {
             JOptionPane.showMessageDialog(this, state.getIllegalMoveError());
         }
+        if(state.getStartGame()) {
+            startGame();
+        }
+    }
+
+    private void startGame() {
+        SetupState currentState = setupViewModel.getState();
+        System.out.println(currentState.getHeight());
+        System.out.println(currentState.getWidth());
+        this.rows = currentState.getHeight() >0 ? currentState.getHeight(): 1;
+        this.cols = currentState.getWidth() >0 ? currentState.getWidth(): 1;
+        this.player1Turn = currentState.getIsPlayer1Turn();
+        this.player1Name = currentState.getPlayer1Name();
+        this.player2Name = currentState.getPlayer2Name();
+
+        // Initialize the grid and its respective grid buttons
+        setLayout(new BorderLayout());
+        JPanel gridPanel = new JPanel(new GridLayout(rows, cols));
+        grid = new JLabel[rows][cols];
+        columnButtons = new JButton[cols];
+        initializeGrid(gridPanel);
+        initializeButtons();
+        add(gridPanel, BorderLayout.CENTER);
+
+        // Initialize the menu buttons
+        forfeitButton = new JButton(setupViewModel.FORFEIT_LABEL);
+        forfeitButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource() == forfeitButton) {
+                            //TODO: forfeit
+                        }
+                    }
+                });
+
+        undoButton = new JButton(setupViewModel.UNDO_LABEL);
+        undoButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (e.getSource() == undoButton) {
+                            setupController.undoMove();
+                        }
+                    }
+                });
+        JPanel menuPanel = new JPanel();
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+        menuPanel.add(forfeitButton);
+        menuPanel.add(undoButton);
+        add(menuPanel, BorderLayout.EAST);
+
+        // Initialize user labels and turn label
+        initializeUserLabels(player1Turn);
+
+        // Add user labels at the bottom of the grid
+        addBottomUserLabels();
+
+        // Add turn label at the top of the grid
+        addTopTurnLabel();
     }
 }

@@ -13,18 +13,5 @@ public class GameUseCaseFactory {
 
     private GameUseCaseFactory() {}
 
-    public static GameView create(SetupViewModel setupViewModel, ViewManagerModel viewManagerModel){
-        try{
-            SetupController setupController = createSetupUseCase(setupViewModel, viewManagerModel);
-            return new GameView(setupController, setupViewModel);
-        } catch (Exception e) {
-            System.out.println("Can't open Game");
-        } return null;
-    }
 
-    private static SetupController createSetupUseCase(SetupViewModel setupViewModel, ViewManagerModel viewManagerModel) {
-        SetupOutputBoundary setupOutputBoundary = new SetupPresenter(viewManagerModel, setupViewModel);
-        SetupInputBoundary setupInteractor = new SetUpInteractor(setupOutputBoundary);
-        return new SetupController(setupInteractor);
-    }
 }

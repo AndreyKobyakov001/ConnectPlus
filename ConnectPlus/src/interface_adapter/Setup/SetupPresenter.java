@@ -24,6 +24,7 @@ public class SetupPresenter implements SetupOutputBoundary {
     @Override
     public void startGame(SetupOutputData outputData) {
         SetupState setupState = setupViewModel.getState();
+        setupState.setStartGame(true);
         setupState.setBoardState(outputData.getBoardState());
         setupState.setPlayer1Name(outputData.getPlayer1());
         setupState.setPlayer2Name(outputData.getPlayer2());
@@ -33,6 +34,7 @@ public class SetupPresenter implements SetupOutputBoundary {
         setupState.setBotDiff(outputData.getBotDifficulty());
         viewManagerModel.setActiveView(setupViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+        setupViewModel.firePropertyChanged();
     }
 
     @Override
@@ -45,5 +47,6 @@ public class SetupPresenter implements SetupOutputBoundary {
         SetupState setupState = setupViewModel.getState();
         setupState.setIllegalMoveError("Illegal Move");
         setupViewModel.firePropertyChanged();
+        setupState.setIllegalMoveError(null);
     }
 }
