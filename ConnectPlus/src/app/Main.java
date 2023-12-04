@@ -3,7 +3,6 @@ package app;
 import DataAccsessinterfaces.FileDAO;
 import DataAccsessinterfaces.UserFactory;
 import interface_adapter.GameBuild.GameBuildViewModel;
-import interface_adapter.Home.EndViewModel;
 import interface_adapter.Setup.SetupViewModel;
 import view.*;
 import interface_adapter.ViewManagerModel;
@@ -44,7 +43,7 @@ public class Main {
         LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
         GameBuildViewModel gameBuildViewModel = new GameBuildViewModel();
         SetupViewModel setupViewModel = new SetupViewModel();
-        EndViewModel EndViewModel = new EndViewModel();
+
 
         FileDAO userDataAccessObject;
         //TODO: access the file if already exists
@@ -60,9 +59,6 @@ public class Main {
 
         LoggedInView loggedInView = LoggedInUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel);
         views.add(loggedInView, loggedInView.viewName);
-
-        EndView endView = EndviewUseCaseFactory.create(viewManagerModel, EndViewModel, gameBuildViewModel);
-        views.add(endView, endView.viewName);
 
         JPanel[] gameViews = GameBuildUseCaseFactory.create(viewManagerModel, loggedInViewModel, gameBuildViewModel, setupViewModel);
         GameBuildView gameBuildView = (GameBuildView) gameViews[0];

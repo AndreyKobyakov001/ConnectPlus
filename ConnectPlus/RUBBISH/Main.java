@@ -101,7 +101,7 @@ public class Main {
                     // Save the new username and hashed password to the local text file
                     saveUserDataToFile(newUser.getUsername(), newUser.getPassword());
 
-                    System.out.println("Entities.User account created successfully.");
+                    System.out.println("User account created successfully.");
 //                    System.out.println(newUser);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Error: " + e.getMessage());
