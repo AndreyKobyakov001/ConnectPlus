@@ -9,6 +9,12 @@ public class WinChecker {
         this.board = board;
     }
 
+    public void setBoard(char[][] board) {
+        this.board = board;
+    }
+
+
+
     public boolean checkWin(char playerSymbol) {
         System.out.println("Checking");
         int length = board[0].length;

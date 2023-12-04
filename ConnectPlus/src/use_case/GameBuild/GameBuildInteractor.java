@@ -60,18 +60,18 @@ public class GameBuildInteractor implements GameBuildInputBoundary {
 
 
     public boolean checkHeight(int minHeight, int maxHeight, int height) {
-        return height > minHeight && height < maxHeight;
+        return height >= minHeight && height <= maxHeight;
     }
 
 
     public boolean checkWidth(int minWidth, int maxWidth, int width) {
-        return width > minWidth && width < maxWidth;
+        return width >= minWidth && width <= maxWidth;
     }
 
 
     public boolean checkWinCondition(int minWinCond, int maxWinCond,
                                      int winCondition, int height, int width) {
-        if (winCondition > minWinCond && winCondition < maxWinCond) {
+        if (winCondition >= minWinCond && winCondition <= maxWinCond) {
             return winCondition <= Math.min(height - 1, width - 1 );
         } return false; //This code block is unintuitive af.
     }
@@ -79,7 +79,7 @@ public class GameBuildInteractor implements GameBuildInputBoundary {
 
     public boolean checkBotDifficulty(int minBotDiff, int maxBotDiff,
                                       int botDifficulty) {
-        return botDifficulty > minBotDiff && botDifficulty < maxBotDiff;
+        return botDifficulty >= minBotDiff && botDifficulty <= maxBotDiff;
     }
 
     // return to main menu if user presses back, warn users of

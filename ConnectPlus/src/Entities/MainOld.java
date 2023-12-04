@@ -276,12 +276,12 @@
 //        switch (gameModeChoice) {
 //            case "1":
 //                //Player methods were in here; original may be found in RUBBISH
-//                new Player(username);
+//                new PlayerOld(username);
 //                break;
 ////                System.out.println("hello");
 //
 //            case "2":
-//                new Bot(username);
+//                new BotOld(username);
 //                break;
 ////                System.out.println("HELlO");
 //
