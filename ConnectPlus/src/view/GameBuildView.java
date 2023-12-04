@@ -86,9 +86,10 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         checkboxPanel.add(pvbCheckBox);
 
         // Panel for sliders
-
+        GameBuildState currentState = gameBuildViewModel.getState();
         JPanel slidersPanel = new JPanel(new GridLayout(4, 2, 5, 5));
         heightSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_HEIGHT, gameBuildViewModel.MAX_HEIGHT, gameBuildViewModel.DEF_HEIGHT);
+        currentState.setHeight(heightSlider.getValue());
         heightSlider.addChangeListener(
                 new ChangeListener() {
                     @Override
@@ -103,12 +104,14 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         heightSlider.setPaintTicks(true);
         heightSlider.setPaintLabels(true);
         heightSlider.setLabelTable(heightSlider.createStandardLabels(1));
+        heightSlider.setSnapToTicks(true);
         Hashtable<Integer, JLabel> labelTableHeight = new Hashtable<>();
         labelTableHeight.put(gameBuildViewModel.MIN_HEIGHT, new JLabel("" + gameBuildViewModel.MIN_HEIGHT));
         labelTableHeight.put(gameBuildViewModel.MAX_HEIGHT, new JLabel("" + gameBuildViewModel.MAX_HEIGHT));
         heightSlider.setLabelTable(labelTableHeight);
 
         bofDiffSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_BOT_DIFF, gameBuildViewModel.MAX_BOT_DIFF, gameBuildViewModel.DEF_BOT_DIFF);
+        currentState.setBotDiff(bofDiffSlider.getValue());
         bofDiffSlider.addChangeListener(
                 new ChangeListener() {
                     @Override
@@ -122,12 +125,14 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         bofDiffSlider.setPaintTicks(true);
         bofDiffSlider.setPaintLabels(true);
         bofDiffSlider.setLabelTable(bofDiffSlider.createStandardLabels(1));
+        bofDiffSlider.setSnapToTicks(true);
         Hashtable<Integer, JLabel> labelTableBotDiff = new Hashtable<>();
         labelTableBotDiff.put(gameBuildViewModel.MIN_BOT_DIFF, new JLabel("" + gameBuildViewModel.MIN_BOT_DIFF));
         labelTableBotDiff.put(gameBuildViewModel.MAX_BOT_DIFF, new JLabel("" + gameBuildViewModel.MAX_BOT_DIFF));
         bofDiffSlider.setLabelTable(labelTableBotDiff);
 
         widthSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_WIDTH, gameBuildViewModel.MAX_WIDTH, gameBuildViewModel.DEF_WIDTH);
+        currentState.setWidth(widthSlider.getValue());
         widthSlider.addChangeListener(
                 new ChangeListener() {
                     @Override
@@ -141,12 +146,14 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         widthSlider.setPaintTicks(true);
         widthSlider.setPaintLabels(true);
         widthSlider.setLabelTable(widthSlider.createStandardLabels(1));
+        widthSlider.setSnapToTicks(true);
         Hashtable<Integer, JLabel> labelTableWidth = new Hashtable<>();
         labelTableWidth.put(gameBuildViewModel.MIN_WIDTH, new JLabel("" + gameBuildViewModel.MIN_WIDTH));
         labelTableWidth.put(gameBuildViewModel.MAX_WIDTH, new JLabel("" + gameBuildViewModel.MAX_WIDTH));
         widthSlider.setLabelTable(labelTableWidth);
 
         winCondSlider = new JSlider(JSlider.HORIZONTAL, gameBuildViewModel.MIN_WIN_COND, gameBuildViewModel.MAX_WIN_COND, gameBuildViewModel.DEF_WIN_COND);
+        currentState.setWinCondition(winCondSlider.getValue());
         winCondSlider.addChangeListener(
                 new ChangeListener() {
                     @Override
@@ -160,6 +167,7 @@ public class GameBuildView extends JPanel implements ActionListener, PropertyCha
         winCondSlider.setPaintTicks(true);
         winCondSlider.setPaintLabels(true);
         winCondSlider.setLabelTable(winCondSlider.createStandardLabels(1));
+        winCondSlider.setSnapToTicks(true);
         // Create a Hashtable for labels
         Hashtable<Integer, JLabel> labelTableWinC = new Hashtable<>();
 

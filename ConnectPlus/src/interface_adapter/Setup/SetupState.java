@@ -21,6 +21,7 @@ public class SetupState {
     private String player1Name;
     private boolean startGame = false;
     private int winCond;
+    private int result;
     public SetupState() {}
 
     public SetupState(SetupState copy) {
@@ -32,8 +33,16 @@ public class SetupState {
         boardState = copy.boardState;
         illegalMoveError = copy.illegalMoveError;
         isPlayer1Turn = copy.isPlayer1Turn;
-
         winCond = copy.winCond;
+        result = copy.result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public int getResult() {
+        return result;
     }
 
     public void setWinCond(int winCond) {

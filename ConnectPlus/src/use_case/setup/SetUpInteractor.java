@@ -6,6 +6,9 @@ import Entities.Bot;
 import Entities.WinChecker;
 import use_case.GameBuild.GameBuildOutputData;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 public class SetUpInteractor implements SetupInputBoundary {
@@ -36,36 +39,13 @@ public class SetUpInteractor implements SetupInputBoundary {
         this.botDiff = setupInputData.getBotDifficulty();
         this.player2 = this.botDiff == -1 ?
                 new Player("Player 2", 'O') :
-                new Bot("Bot", 'X', setupInputData.getBotDifficulty());
+                new Bot("Bot", 'O', setupInputData.getBotDifficulty());
         this.winChecker = new WinChecker(setupInputData.getWinCondition(), board.getBoard());
         previousStates.push(board.getBoard()); // Store initial state
         updatePresenterWithStartGame();
     }
 
     @Override
-//    Commented out -  a new version exists below; this exists for reference.
-//    public void makeMove(int column, String playerName) {
-//        if (!board.isValidMove(column)) {
-//            presenter.illegalMove();
-//            return;
-//        }
-//
-//        Player currentPlayer = playerName.equals(player1.getName()) ? player1 : player2;
-//
-//        // Save current state before making a move
-//        board.makeMove(column, currentPlayer.getSymbol());
-//        previousStates.push(board.getBoard());
-//        winChecker.setBoard(board.getBoard());
-//        if (determineWinner() != -1 || board.isFull()) {
-//            endGame();
-//        } else {
-//            isPlayer1Turn = !isPlayer1Turn;
-//            updatePresenterWithBoardState();
-//            if (!isPlayer1Turn && player2 instanceof Bot) {
-//                makeBotMove();
-//            }
-//        }
-//    }
     public void makeMove(int column, String playerName) {
         if (!board.isValidMove(column)) {
             presenter.illegalMove();
@@ -79,12 +59,14 @@ public class SetUpInteractor implements SetupInputBoundary {
 //        winChecker.setBoard(board.getBoard());
         isPlayer1Turn = !isPlayer1Turn;
         updatePresenterWithBoardState();
+        if (!isPlayer1Turn && player2 instanceof Bot) {
+//            makeBotMoveRandomly();
+            makeBotMove();
+        }
 
         int winner = determineWinner();
         if (winner != -1 || board.isFull()) {
             endGame();
-        } else if (!isPlayer1Turn && player2 instanceof Bot) {
-            makeBotMove();
         }
     }
 
@@ -118,12 +100,14 @@ public class SetUpInteractor implements SetupInputBoundary {
     private void updatePresenterWithBoardState() {
         SetupOutputData outputData = createOutputData();
         outputData.setBoardState(board.getBoard());
+        outputData.setPlayer1Turn(isPlayer1Turn);
         presenter.updateBoard(outputData);
     }
 
     private void updatePresenterWithStartGame() {
         SetupOutputData outputData = createOutputData();
         outputData.setPlayer1Turn(true); // Who goes first?
+        outputData.setisWon(-1);
         outputData.setBoardState(board.getBoard());
         presenter.startGame(outputData);
     }
@@ -201,98 +185,140 @@ public class SetUpInteractor implements SetupInputBoundary {
         }
         return best;
     }
+
+    private void makeBotMoveRandomly(){
+        Random random = new Random();
+
+        List<Integer> legalColumns = new ArrayList<>();
+
+        // Find all legal columns (columns that are not full)
+        for (int j = 0; j < board.getWidth(); j++) {
+            if (board.getCell(0, j) == '?') {  // Check if the top cell of the column is empty
+                legalColumns.add(j);
+            }
+        }
+
+        if (!legalColumns.isEmpty()) {
+            // Randomly select a legal column
+            int chosenColumn = legalColumns.get(random.nextInt(legalColumns.size()));
+
+            // Find the lowest empty cell in the chosen column
+            int i = board.getHeight() - 1;
+            while (i > 0 && board.getCell(i, chosenColumn) != '?') {
+                i--;
+            }
+
+            // Make the move in the lowest empty cell of the column
+            makeMove(chosenColumn, player2.getName());
+        }
+    }
     private void makeBotMove() {
         int bestVal = Integer.MIN_VALUE;
         int bestMove = -1;
 
-        // Traverse all cells, evaluate minimax function for all empty cells
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                // Check if cell is empty
-                if (board.getCell(i, j) == ' ') {
-                    // Make the move
-                    board.setCell(i, j, player2.getSymbol());
+        // Traverse only the top row of each column
+        for (int j = 0; j < board.getWidth(); j++) {
+            System.out.println("width: " + j);
+            // Check if the top cell of the column is empty (i.e., the column is not full)
+            if (board.getCell(0, j) == '?') {
+                // Find the lowest empty cell in this column
+                int i = board.getHeight() - 1;
+                while (i > 0 && board.getCell(i, j) != '?') {
+                    i--;
+                }
 
-                    // Compute evaluation function for this move
-                    int moveVal = minimax(0, false);
+                // Make the move in the lowest empty cell of the column
+                board.setCell(i, j, player2.getSymbol());
 
-                    // Undo the move
-                    board.setCell(i, j, ' ');
+                // Compute evaluation function for this move
+                int moveVal = minimax(board.getWinCondition(), false);
 
-                    // If the value of the current move is greater than the best value
-                    if (moveVal > bestVal) {
-                        bestMove = j; // Assuming the move is identified by the column index
-                        bestVal = moveVal;
-                    }
+                // Undo the move
+                board.setCell(i, j, '?');
+
+                // If the value of the current move is greater than the best value
+                if (moveVal > bestVal) {
+                    bestMove = j; // Move is identified by the column index
+                    bestVal = moveVal;
                 }
             }
         }
-        makeMove(bestMove, player2.getName());
+
+        if (bestMove != -1) {
+            makeMove(bestMove, player2.getName());
+        }
     }
+
 
     private int evaluateBoard() {
         int score = 0;
 
-        // Check horizontal connections
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j <= board.getWidth() - board.getWinCondition(); j++) {
-                int count = 0;
-                for (int k = 0; k < board.getWinCondition(); k++) {
-                    if (board.getCell(i, j + k) == player1.getSymbol()) {
-                        count++;
-                    } else if (board.getCell(i, j + k) == player2.getSymbol()) {
-                        count--;
-                    }
-                }
-                score += count * count;
-            }
-        }
+        // Score for horizontal, vertical, and both diagonal directions
+        score += scoreDirection(0, 1); // Horizontal
+        score += scoreDirection(1, 0); // Vertical
+        score += scoreDirection(1, 1); // Diagonal (positive slope)
+        score += scoreDirection(1, -1); // Diagonal (negative slope)
 
-        // Check vertical connections
-        for (int i = 0; i <= board.getHeight() - board.getWinCondition(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                int count = 0;
-                for (int k = 0; k < board.getWinCondition(); k++) {
-                    if (board.getCell(i + k, j) == player1.getSymbol()) {
-                        count++;
-                    } else if (board.getCell(i + k, j) == player2.getSymbol()) {
-                        count--;
-                    }
-                }
-                score += count * count;
-            }
-        }
-
-        // Check diagonal (positive slope) connections
-        for (int i = 0; i <= board.getHeight() - board.getWinCondition(); i++) {
-            for (int j = 0; j <= board.getWidth() - board.getWinCondition(); j++) {
-                int count = 0;
-                for (int k = 0; k < board.getWinCondition(); k++) {
-                    if (board.getCell(i + k, j + k) == player1.getSymbol()) {
-                        count++;
-                    } else if (board.getCell(i + k, j + k) == player2.getSymbol()) {
-                        count--;
-                    }
-                }
-                score += count * count;
-            }
-        }
-
-        // Check diagonal (negative slope) connections
-        for (int i = board.getWinCondition() - 1; i < board.getHeight(); i++) {
-            for (int j = 0; j <= board.getWidth() - board.getWinCondition(); j++) {
-                int count = 0;
-                for (int k = 0; k < board.getWinCondition(); k++) {
-                    if (board.getCell(i - k, j + k) == player1.getSymbol()) {
-                        count++;
-                    } else if (board.getCell(i - k, j + k) == player2.getSymbol()) {
-                        count--;
-                    }
-                }
-            }
-        }
         return score;
     }
+
+    private int scoreDirection(int dRow, int dCol) {
+        int winCondition = board.getWinCondition();
+        int tempScore = 0;
+
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                if (canFormLine(i, j, dRow, dCol, winCondition)) {
+                    int countPlayer1 = 0;
+                    int countPlayer2 = 0;
+
+                    for (int k = 0; k < winCondition; k++) {
+                        char cell = board.getCell(i + dRow * k, j + dCol * k);
+                        if (cell == player1.getSymbol()) {
+                            countPlayer1++;
+                        } else if (cell == player2.getSymbol()) {
+                            countPlayer2++;
+                        }
+                    }
+
+                    tempScore += evaluateLine(countPlayer1, countPlayer2, winCondition);
+                }
+            }
+        }
+
+        return tempScore;
+    }
+
+    private boolean canFormLine(int startRow, int startCol, int dRow, int dCol, int length) {
+        // Check if the line goes out of bounds
+        return startRow + dRow * (length - 1) < board.getHeight() &&
+                startCol + dCol * (length - 1) < board.getWidth() &&
+                startRow + dRow * (length - 1) >= 0 &&
+                startCol + dCol * (length - 1) >= 0;
+    }
+
+    private int evaluateLine(int countPlayer1, int countPlayer2, int winCondition) {
+        if (countPlayer1 > 0 && countPlayer2 > 0) {
+            // Mixed line, no potential for either player
+            return 0;
+        } else if (countPlayer2 == winCondition) {
+            // Player 2 wins
+            return 10;
+        } else if (countPlayer1 == winCondition) {
+            // Player 1 wins
+            return -10;
+        } else {
+            // Score based on potential to form a line
+            // More pieces in line scores higher, less scores lower
+            if (countPlayer2 > 0) {
+                return countPlayer2 * 2; // You may adjust the multiplier
+            } else if (countPlayer1 > 0) {
+                return -countPlayer1 * 2; // You may adjust the multiplier
+            }
+            return 0;
+        }
+    }
+
 
 
 }

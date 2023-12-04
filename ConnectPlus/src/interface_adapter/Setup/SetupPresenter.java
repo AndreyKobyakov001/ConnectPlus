@@ -17,6 +17,7 @@ public class SetupPresenter implements SetupOutputBoundary {
     public void updateBoard(SetupOutputData outputData) {
         SetupState setupState = setupViewModel.getState();
         setupState.setBoardState(outputData.getBoardState());
+        setupState.setIsPlayer1Turn(outputData.getPlayer1Turn());
         setupViewModel.firePropertyChanged();
 
     }
@@ -40,12 +41,14 @@ public class SetupPresenter implements SetupOutputBoundary {
     @Override
     public void endGame(SetupOutputData outputData) {
         SetupState setupState = setupViewModel.getState();
-//        //TODO: make sure this is correct
-//        setupState.setScore1(outputData.getIsWon() == 1 ? setupState.getScore1() + 1 : setupState.getScore1());
-//        setupState.setScore2(outputData.getIsWon() == 2 ? setupState.getScore2() + 1 : setupState.getScore2());
-
-        setupState.setBoardState(outputData.getBoardState());
+        setupState.setStartGame(false);
+        setupState.setResult(outputData.getIsWon());
+//        EndState endState = endViewModel.getState();
+//        endState.setIsWon(outputData.getIsWon());
+//        endViewModel.firePropertyChanged();
         setupViewModel.firePropertyChanged();
+        viewManagerModel.setActiveView("end view");
+        viewManagerModel.firePropertyChanged();
     }
 
     @Override
