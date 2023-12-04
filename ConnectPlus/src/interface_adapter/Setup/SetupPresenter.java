@@ -40,9 +40,9 @@ public class SetupPresenter implements SetupOutputBoundary {
     @Override
     public void endGame(SetupOutputData outputData) {
         SetupState setupState = setupViewModel.getState();
-        //TODO: make sure this is correct
-        setupState.setScore1(outputData.getIsWon() == 1 ? setupState.getScore1() + 1 : setupState.getScore1());
-        setupState.setScore2(outputData.getIsWon() == 2 ? setupState.getScore2() + 1 : setupState.getScore2());
+//        //TODO: make sure this is correct
+//        setupState.setScore1(outputData.getIsWon() == 1 ? setupState.getScore1() + 1 : setupState.getScore1());
+//        setupState.setScore2(outputData.getIsWon() == 2 ? setupState.getScore2() + 1 : setupState.getScore2());
 
         setupState.setBoardState(outputData.getBoardState());
         setupViewModel.firePropertyChanged();

@@ -43,6 +43,29 @@ public class SetUpInteractor implements SetupInputBoundary {
     }
 
     @Override
+//    Commented out -  a new version exists below; this exists for reference.
+//    public void makeMove(int column, String playerName) {
+//        if (!board.isValidMove(column)) {
+//            presenter.illegalMove();
+//            return;
+//        }
+//
+//        Player currentPlayer = playerName.equals(player1.getName()) ? player1 : player2;
+//
+//        // Save current state before making a move
+//        board.makeMove(column, currentPlayer.getSymbol());
+//        previousStates.push(board.getBoard());
+//        winChecker.setBoard(board.getBoard());
+//        if (determineWinner() != -1 || board.isFull()) {
+//            endGame();
+//        } else {
+//            isPlayer1Turn = !isPlayer1Turn;
+//            updatePresenterWithBoardState();
+//            if (!isPlayer1Turn && player2 instanceof Bot) {
+//                makeBotMove();
+//            }
+//        }
+//    }
     public void makeMove(int column, String playerName) {
         if (!board.isValidMove(column)) {
             presenter.illegalMove();
@@ -51,18 +74,17 @@ public class SetUpInteractor implements SetupInputBoundary {
 
         Player currentPlayer = playerName.equals(player1.getName()) ? player1 : player2;
 
-        // Save current state before making a move
         board.makeMove(column, currentPlayer.getSymbol());
         previousStates.push(board.getBoard());
-        winChecker.setBoard(board.getBoard());
-        if (determineWinner() != -1 || board.isFull()) {
+//        winChecker.setBoard(board.getBoard());
+        isPlayer1Turn = !isPlayer1Turn;
+        updatePresenterWithBoardState();
+
+        int winner = determineWinner();
+        if (winner != -1 || board.isFull()) {
             endGame();
-        } else {
-            isPlayer1Turn = !isPlayer1Turn;
-            updatePresenterWithBoardState();
-            if (!isPlayer1Turn && player2 instanceof Bot) {
-                makeBotMove();
-            }
+        } else if (!isPlayer1Turn && player2 instanceof Bot) {
+            makeBotMove();
         }
     }
 
