@@ -39,7 +39,8 @@ public class EndView extends JPanel implements ActionListener, PropertyChangeLis
 
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+        playagain.setText(endViewModel.RESTART_SAME_LABEL);
+        exit.setText(endViewModel.HOME_LABEL);
 
 
         exit.addActionListener(
@@ -68,6 +69,7 @@ public class EndView extends JPanel implements ActionListener, PropertyChangeLis
 
 
         this.add(elo);
+        this.add(goodgame);
         this.add(playagain);
         this.add(exit);
 
@@ -82,7 +84,7 @@ public class EndView extends JPanel implements ActionListener, PropertyChangeLis
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        EndViewState currentState = endViewModel.getState();
+        EndViewState currentState = (EndViewState) evt.getNewValue();
         if (currentState.getELODelta() > 0) {
             elo.setText(endViewModel.ELO_LABEL + currentState.getELODelta());
         }

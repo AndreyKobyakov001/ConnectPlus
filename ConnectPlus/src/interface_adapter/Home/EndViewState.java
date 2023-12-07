@@ -2,8 +2,8 @@ package interface_adapter.Home;
 
 public class EndViewState {
 
-        private int isWon;
-        private int ELODelta;
+        private int isWon = -1;
+        private int ELODelta = 0;
 
         public EndViewState() {}
 

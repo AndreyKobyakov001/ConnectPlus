@@ -16,7 +16,5 @@ public class LoggedInController {
 
 
 
-//    public void back() {
-//        loggedInViewModel.back();
-//    }
+
 }

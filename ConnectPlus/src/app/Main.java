@@ -47,7 +47,7 @@ public class Main {
         EndViewModel endViewModel = new EndViewModel();
 
         FileDAO userDataAccessObject;
-        //TODO: access the file if already exists
+
         try {
             userDataAccessObject = new FileDAO("./users.csv", new UserFactory());
         } catch (IOException e) {

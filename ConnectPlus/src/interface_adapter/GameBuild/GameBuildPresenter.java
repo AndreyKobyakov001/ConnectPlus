@@ -37,7 +37,7 @@ public class GameBuildPresenter implements GameBuildOutputBoundary {
         gameBuildViewModel.firePropertyChanged();
     }
 
-    @Override //TODO: same with displayPVP, initialize game using outputdata and set active view to gameview, then let them play
+    @Override
     public void displayPVB(GameBuildOutputData gameBuildOutputData){
         GameBuildState gameBuildState = gameBuildViewModel.getState();
         gameBuildState.setStartGame(true);

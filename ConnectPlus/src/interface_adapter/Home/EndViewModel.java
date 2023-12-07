@@ -17,7 +17,7 @@ public class EndViewModel extends ViewModel {
     private EndViewState state = new EndViewState();
 
     public EndViewModel() {
-        super("End View");
+        super("end view");
     }
 
     public void setState(EndViewState state) {

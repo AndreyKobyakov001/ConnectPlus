@@ -15,13 +15,12 @@ public class loginTest {
 
     public static void main(String[] args) throws Exception {
         UserFactory userFactory = new UserFactory();
-        userDataAccessObject = new FileDAO("./user_data.txt", userFactory);
+        userDataAccessObject = new FileDAO("./users.txt", userFactory);
         LoginInteractor loginInteractor = new LoginInteractor(userDataAccessObject, null);
         loginInteractor.execute();
     }
 
-    //TODO: test log in vs sign up
-    //TODO: test loggedIn
+
 
 
 

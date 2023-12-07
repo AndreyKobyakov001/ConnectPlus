@@ -123,9 +123,7 @@ public class Board {
         }
     }
 
-    public BoardState getState() {
-        return new BoardState(board);
-    }
+
 
     public void displayBoard() {
         for (int i = 0; i < height; i++) {
