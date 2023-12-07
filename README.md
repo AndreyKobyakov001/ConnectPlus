@@ -5,3 +5,9 @@ Users can sign in via Facebook, and either play against a friend, or against a b
 Users can also share the results of their games, and check statistics like the games they've won and lost, and their rating!
 
  This project was developed by Andrey Kobyakov, Law Kieu, and Chris Giannoulis for CSC207 using Java. 
+
+
+Requirements
+jdk 21
+chromedriver (or .exe if on Windows, add .exe in src/use_case/login/logininteractor.java and the path) - https://chromedriver.chromium.org/downloads (dependent on your chrome version)
+```
